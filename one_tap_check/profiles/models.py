@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 
-class BaseProfile:
+class BaseProfile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.SET_NULL)
     
     class Meta:
@@ -10,6 +10,7 @@ class BaseProfile:
     
     
 class ScheduleMixin:
+    # schdules are yet to be implemented
     schedule = None
     
     class Meta:
