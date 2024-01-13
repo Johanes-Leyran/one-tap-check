@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class ScheduleSheet(models.Model):
     name = models.CharField(max_length=120)
-    start_day = models.DateField()
+    start_day_at = models.DateField()
     stop_day_at = models.DateField()
 
 

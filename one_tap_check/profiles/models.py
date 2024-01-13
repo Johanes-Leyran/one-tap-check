@@ -9,14 +9,6 @@ class BaseProfile(models.Model):
         abstract = True
     
     
-class ScheduleMixin:
-    # schdules are yet to be implemented
-    schedule = None
-    
-    class Meta:
-        abstract = True
-    
-    
 class StudentProfile(BaseProfile, ScheduleMixin):
     section = models.CharField(max_length=60)
     adviser = models.ForeignKey(
