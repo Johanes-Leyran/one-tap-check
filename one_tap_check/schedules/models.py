@@ -5,6 +5,7 @@ from django.utils import timezone
 
 
 class ScheduleSheet(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.SET_NULL)
     name = models.CharField(max_length=120)
     start_day_at = models.DateField()
     stop_day_at = models.DateField()

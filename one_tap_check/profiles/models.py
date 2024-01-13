@@ -9,7 +9,7 @@ class BaseProfile(models.Model):
         abstract = True
     
     
-class StudentProfile(BaseProfile, ScheduleMixin):
+class StudentProfile(BaseProfile):
     section = models.CharField(max_length=60)
     adviser = models.ForeignKey(
         get_user_model(), on_delete=models.SET_NULL, related_name="advisory_students"
@@ -26,11 +26,11 @@ class StudentProfile(BaseProfile, ScheduleMixin):
     )
 
 
-class TeacherProfile(BaseProfile, ScheduleMixin):
+class TeacherProfile(BaseProfile):
     department = models.CharField(max_length=60)
     
 
-class StaffProfile(BaseProfile, ScheduleMixin):
+class StaffProfile(BaseProfile):
     role = models.CharField(max_length=120)
     
     
