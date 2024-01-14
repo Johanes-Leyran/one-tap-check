@@ -7,6 +7,9 @@ class BaseProfile(models.Model):
     
     class Meta:
         abstract = True
+        
+    def __str__(self):
+        return f'profile of {self.user.lastname}'
     
     
 class StudentProfile(BaseProfile):
@@ -33,5 +36,4 @@ class StudentProfile(BaseProfile):
 class StaffProfile(BaseProfile):
     role = models.CharField(max_length=120)
     department = models.CharField(max_length=60, null=True)
-    
-    
+    # add feature to 
