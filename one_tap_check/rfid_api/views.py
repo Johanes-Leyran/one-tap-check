@@ -1,0 +1,54 @@
+from rest_framework.response import Response
+from rest_framework import views
+from rest_framework import status
+from .serializer import TapInSerializerStudent, TapInSerializerTeacher
+from attendances.models import Attendance, Attendee
+from rooms.models import Room
+from django.contrib.auth import get_user_model
+from django import http
+
+
+class RoomTapInView(views.APIView):
+    def get_object(self, serializer, model, field):
+        uuid = serializer.validated_data[field]
+        
+        try:
+            return model.objects.get(uuid=uuid)
+        except model.DoesNotExist:
+            raise http.Http404(f'not found')
+    
+    def post(self, request):
+        serializer = TapInSerializerTeacher(data=request.data)
+        
+        if not serializer.is_valid():
+            return Response({'error': 'invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        teacher = self.get_object(serializer, get_user_model(), 'user_uuid')
+        room = self.get_object(serializer, Room, 'user_uuid')
+        
+        if not teacher.is_teacher:
+            return Response({'error': 'user has no permission'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if not room.is_available:
+            return Response({'error': 'room is not available'}, status=status.HTTP_403_FORBIDDEN)
+        
+        attendance = Attendance.objects.create(room=room, teacher=teacher)
+        attendance.save()
+        room.is_available = False
+        room.save()
+        
+        return Response(
+            {'success': 'attendance created', 'attendance_id': attendance.pk},
+            status=status.HTTP_201_CREATED
+        )    
+            
+    def update(self, request):
+        serializer = TapInSerializerStudent(data=request.data)
+        
+        if not serializer.is_valid():
+            return Response({'error': 'invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        attendance = self.get_object(serializer, Attendance, 'attendance_id')
+        student = self.get_object(serializer, get_user_model(), 'user_uuid')
+        attendee = Attendee.objects.create(attendance=attendance, user=student)
+        attendee.save()
