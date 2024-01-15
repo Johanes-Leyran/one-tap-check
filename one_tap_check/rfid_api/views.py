@@ -42,7 +42,7 @@ class RoomTapInView(views.APIView):
             status=status.HTTP_201_CREATED
         )    
             
-    def update(self, request):
+    def patch(self, request):
         serializer = TapInSerializerStudent(data=request.data)
         
         if not serializer.is_valid():
