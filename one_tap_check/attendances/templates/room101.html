@@ -121,7 +121,7 @@
     </thead>
     <tbody>
       <!-- Sample Data -->
-      {% for t in attendance.attendees %}
+      {% for t in attendance.attendees.all() %}
         <tr class="late-section">
           <td>2</td>
           <td>{{ t.user.last_name }}, {{ t.user.first_name }}</td>
