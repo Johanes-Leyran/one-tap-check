@@ -83,11 +83,10 @@ WSGI_APPLICATION = 'one_tap_check.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'one_tap_db',
-        'USER': 'root',
-        'PASSWORD': 'super+00=10zqy',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': 'group2research$one_tap_db',
+        'USER': 'group2research',
+        'PASSWORD': "L,8@rq6'am>8Lnn",
+        'HOST': 'group2research.mysql.pythonanywhere-services.com',
     }
 }
 
