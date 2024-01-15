@@ -23,14 +23,25 @@ class RoomTapInView(views.APIView):
         if not serializer.is_valid():
             return Response({'error': 'invalid data'}, status=status.HTTP_400_BAD_REQUEST)
         
-        teacher = self.get_object(serializer, get_user_model(), 'user_uuid')
-        room = self.get_object(serializer, Room, 'room_uuid')
+        # teacher = self.get_object(serializer, get_user_model, 'user_uuid')
+        # room = self.get_object(serializer, Room, 'room_uuid')
+        
+        teacher_uuid = serializer.validated_data['user_uuid']
+        room_uuid = serializer.validated_data['room_uuid']
+        
+        try:
+            teacher = get_user_model().objects.get(uuid=teacher_uuid)
+            room = Room.objects.get(uuid=room_uuid)
+        except:
+            raise http.Http404(f"not found")
+            
         
         if not teacher.is_teacher:
             return Response({'error': 'user has no permission'}, status=status.HTTP_401_UNAUTHORIZED)
         
         if not room.is_available:
             return Response({'error': 'room is not available'}, status=status.HTTP_403_FORBIDDEN)
+            
         
         attendance = Attendance.objects.create(room=room, teacher=teacher)
         attendance.save()
