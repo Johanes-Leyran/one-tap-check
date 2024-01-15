@@ -17,7 +17,7 @@ class Attendance(TimezoneAwareMixin):
     
     
 class Attendee(TimezoneAwareMixin):
-    attendance = models.ManyToManyField(Attendance, on_delete=models.PROTECT, related_name='attendees')
+    attendance = models.ForeignKey(Attendance, related_name='attendees')
     user = models.ForeignKey(get_user_model(), null=True)
     starting_at = models.DateTimeField(default=timezone.now) # time in
     end_at = models.DateTimeField(null=True) # time out
