@@ -15,7 +15,7 @@ class RoomTapInView(views.APIView):
         try:
             return model.objects.get(uuid=uuid)
         except model.DoesNotExist:
-            raise http.Http404(f'not found')
+            raise http.Http404(f'not found {model}')
     
     def post(self, request):
         serializer = TapInSerializerTeacher(data=request.data)
