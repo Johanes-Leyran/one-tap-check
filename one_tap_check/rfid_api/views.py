@@ -13,9 +13,9 @@ class RoomTapInView(views.APIView):
         uuid = serializer.validated_data[field]
         
         try:
-            return model.objects.get(uuid=uuid)
+            return model.objects.get(pk=uuid)
         except model.DoesNotExist:
-            return Response({'error': f'not found on {model}'}, status=status.HTTP_404_NOT_FOUND)
+            raise http.Http404(f"not found in {model}")
     
     def post(self, request):
         serializer = TapInSerializerTeacher(data=request.data)
@@ -24,7 +24,7 @@ class RoomTapInView(views.APIView):
             return Response({'error': 'invalid data'}, status=status.HTTP_400_BAD_REQUEST)
         
         teacher = self.get_object(serializer, get_user_model(), 'user_uuid')
-        room = self.get_object(serializer, Room, 'user_uuid')
+        room = self.get_object(serializer, Room, 'room_uuid')
         
         if not teacher.is_teacher:
             return Response({'error': 'user has no permission'}, status=status.HTTP_401_UNAUTHORIZED)
