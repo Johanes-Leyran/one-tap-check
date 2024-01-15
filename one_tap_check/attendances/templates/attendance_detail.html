@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href=".css/teachers.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>OneTap Dashboard</title>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="../teachers.html" class="logo">
+            <i class='bx bx-rfid'></i>
+            <div class="logo-name">One<span class="Tap">Tap</span></div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/Teacher/Dashboard/dashboard-tc.html"><i class='bx bxs-dashboard' ></i>Dashboard</a></li>
+            <li><a href="/Teacher/Room Available/room-available.html"> <i class='bx bx-calendar-check'></i></i>Room Available</a></li>
+            <li><a href="/Teacher/Attendance Records/attendance-rec.html"><i class='bx bx-folder'></i>Attendance Records</a></li>
+        </ul>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="/Registration and Log In/login.html" class="logout">
+                <i class='bx bx-log-out-circle'></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+    </div>
+    <!-- End of Sidebar -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>z
+            </a>
+            <a href="#" class="profile">
+                <img src="./assets/images/sti-logo.png">
+            </a>
+        </nav>
+    
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Welcome to OneTap Coach</h1>
+                </div>
+            </div>
+    
+            <!-- Recent Room Schedules Table -->
+            <section class="next-class-box">
+                <h2>Next Class</h2>
+                <p id="nextClassTime"></p>
+                <p id="nextClassSection"></p>
+                <p id="nextClassSubject"></p>
+                <p id="nextClassRoomNo"></p>
+                <p id="nextClassBuilding"></p>
+            </section>
+            
+            <section class="teacher-sec">
+            <section class="todo-list">
+                <h2>Todo List</h2>
+                <ul id="todoList">
+                    <!-- Todo list items will be dynamically added here using JavaScript -->
+                </ul>
+            </section>
+    
+            <section class="add-note">
+                <h2>Add Note</h2>
+                <textarea id="noteInput" placeholder="Type your note here..."></textarea>
+                <button onclick="addNote()">Add Note</button>
+            </section>
+    </section>
+            <section class="teacher-sec">
+                <h2>Recent Room Schedules</h2>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Room Number</th>
+                            <th>Section</th>
+                            <th>Time In - Time Out</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody">
+                        <!-- Table content will be dynamically added here using JavaScript -->
+                    </tbody>
+                </table>
+    
+    
+            <div style="clear:both;"></div> <!-- Clear float to ensure proper layout -->
+    
+            <!-- Modal for More Information -->
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2>Classroom Information</h2>
+                    <p>Room Number: <span id="modalRoomNumber"></span></p>
+                    <p>Building: <span id="modalBuilding"></span></p>
+                    <p>Capacity: <span id="modalCapacity"></span></p>
+                    <p>Equipment: <span id="modalEquipment"></span></p>
+                </div>
+            </section>
+            </div>
+        </main>
+    
+    
+    </div>
+    
+    <script src="/Admin/assets/js/main-script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script>
+         function addRoomSchedule(roomNumber, section, time, date) {
+                var tableBody = document.getElementById("scheduleTableBody");
+                var newRow = tableBody.insertRow();
+                newRow.innerHTML = "<td>" + roomNumber + "</td><td>" + section + "</td><td>" + time +
+                    "</td><td>" + date + "</td><td><button class='more-info-button' onclick='showMoreInfo(\"" + roomNumber + "\", \"Main Building\", 50, \"Projector, Whiteboard\")'>More Info</button></td>";
+            }
+    
+            // Function to dynamically add todo list items
+            function addToDoItem(task) {
+                var todoList = document.getElementById("todoList");
+                var li = document.createElement("li");
+                li.innerHTML = task;
+                todoList.appendChild(li);
+            }
+    
+            // Function to add a note to the notes section
+            function addNote() {
+                var noteInput = document.getElementById("noteInput").value;
+                addToDoItem("<input type='checkbox'> " + noteInput);
+                // Clear the input field after adding the note
+                document.getElementById("noteInput").value = "";
+            }
+    
+            // Function to dynamically update the next class box
+            function updateNextClass(time, section, subject, roomNo, building) {
+                document.getElementById("nextClassTime").textContent = "Time: " + time;
+                document.getElementById("nextClassSection").textContent = "Section: " + section;
+                document.getElementById("nextClassSubject").textContent = "Subject: " + subject;
+                document.getElementById("nextClassRoomNo").textContent = "Room No.: " + roomNo;
+                document.getElementById("nextClassBuilding").textContent = "Building: " + building;
+            }
+    
+            // Function to show the More Info modal
+            function showMoreInfo(roomNumber, building, capacity, equipment) {
+                document.getElementById("modalRoomNumber").textContent = roomNumber;
+                document.getElementById("modalBuilding").textContent = building;
+                document.getElementById("modalCapacity").textContent = capacity;
+                document.getElementById("modalEquipment").textContent = equipment;
+    
+                var modal = document.getElementById("myModal");
+                modal.style.display = "block";
+            }
+    
+            // Function to close the More Info modal
+            function closeModal() {
+                var modal = document.getElementById("myModal");
+                modal.style.display = "none";
+            }
+    
+            // Example usage:
+            updateNextClass("12:00 PM - 1:30 PM", "B", "History", "102", "Main Building");
+            addRoomSchedule("101", "A", "10:00 AM - 11:30 AM", "2024-01-15");
+        </script>
+    </script>
+</body>
+</html>
