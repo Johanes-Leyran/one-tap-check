@@ -63,3 +63,5 @@ class RoomTapInView(views.APIView):
         student = self.get_object(serializer, get_user_model(), 'user_uuid')
         attendee = Attendee.objects.create(attendance=attendance, user=student)
         attendee.save()
+        
+        return Response({'succes': 'attendee created'}, status=status.HTTP_201_CREATED)
