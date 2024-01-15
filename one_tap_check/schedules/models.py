@@ -11,10 +11,10 @@ class TimezoneAwareMixin(models.Model):
             raise ValidationError("starting date must not be ahead of end date")
     
     def save(self, *args, **kwargs):
-        if not self.starting_at.tzinfo:  # Check if starting_at is naive
+        if not self.starting_at.tzinfo:
             self.starting_at = timezone.make_aware(self.starting_at)
         
-        if not self.end_at.tzinfo:  # Check if end_at is naive
+        if not self.end_at.tzinfo and not self.end_at:
             self.end_at = timezone.make_aware(self.end_at)
             
         super().save(*args, **kwargs)
