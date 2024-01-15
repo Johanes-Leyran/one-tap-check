@@ -35,13 +35,11 @@ class RoomTapInView(views.APIView):
         except:
             raise http.Http404(f"not found")
             
-        
         if not teacher.is_teacher:
             return Response({'error': 'user has no permission'}, status=status.HTTP_401_UNAUTHORIZED)
         
         if not room.is_available:
             return Response({'error': 'room is not available'}, status=status.HTTP_403_FORBIDDEN)
-            
         
         attendance = Attendance.objects.create(room=room, teacher=teacher)
         attendance.save()
