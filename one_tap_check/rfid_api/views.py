@@ -64,8 +64,9 @@ class RoomTapInView(views.APIView):
             
         try:
             student = get_user_model().objects.get(uuid=student_uuid)
-            attendance = Room.objects.get(id=attendance_id)
+            attendance = Room.objects.get(id=int(attendance_id))
         except:
+            print()
             raise http.Http404(f"not found")
         
         attendee = Attendee.objects.create(attendance=attendance, user=student)
