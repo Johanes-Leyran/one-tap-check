@@ -72,3 +72,4 @@ class RoomTapInView(views.APIView):
         attendee.save()
         
         return Response({'succes': 'attendee created'}, status=status.HTTP_201_CREATED)
+    
