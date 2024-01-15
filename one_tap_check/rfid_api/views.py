@@ -58,9 +58,16 @@ class RoomTapInView(views.APIView):
         
         if not serializer.is_valid():
             return Response({'error': 'invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        student_uuid = serializer.validated_data['user_uuid']
+        attendance_id = serializer.validated_data['attendance_id']
             
-        attendance = self.get_object(serializer, Attendance, 'attendance_id')
-        student = self.get_object(serializer, get_user_model(), 'user_uuid')
+        try:
+            student = get_user_model().objects.get(uuid=student_uuid)
+            attendance = Room.objects.get(id=attendance_id)
+        except:
+            raise http.Http404(f"not found")
+        
         attendee = Attendee.objects.create(attendance=attendance, user=student)
         attendee.save()
         
