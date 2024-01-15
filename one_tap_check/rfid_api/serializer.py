@@ -16,7 +16,7 @@ class TapInSerializerTeacher(serializers.ModelSerializer):
     
     class Meta:
         model = Attendance
-        fields = []
+        fields = ['room_uuid', 'user_uuid']
     
     
 class TapInSerializerStudent(serializers.ModelSerializer):
@@ -25,4 +25,4 @@ class TapInSerializerStudent(serializers.ModelSerializer):
     
     class Meta:
         model = Attendance
-        fields = []
+        fields = ['user_uuid', 'attendance_id']
