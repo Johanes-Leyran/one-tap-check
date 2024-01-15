@@ -13,7 +13,7 @@ class RoomTapInView(views.APIView):
         uuid = serializer.validated_data[field]
         
         try:
-            return model.objects.get(pk=uuid)
+            return model.objects.get(uuid=uuid)
         except model.DoesNotExist:
             raise http.Http404(f"not found in {model}")
     
