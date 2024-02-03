@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-+-*=j2*0jf4+rw8dmwyi1w3c+$e67r-y7a7)f*+x6bci0ohg09
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['group2research.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'one_tap_check.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'static'),],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,11 +82,8 @@ WSGI_APPLICATION = 'one_tap_check.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'group2research$default',
-        'USER': 'group2research',
-        'PASSWORD': "L,8@rq6'am>8Lnn",
-        'HOST': 'group2research.mysql.pythonanywhere-services.com',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3'
     }
 }
 
