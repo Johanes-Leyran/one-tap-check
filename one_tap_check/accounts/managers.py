@@ -1,6 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 
-
+# TODO: make the manager implements custom permissions
 class OneTapUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         email = self.normalize_email(email=email)

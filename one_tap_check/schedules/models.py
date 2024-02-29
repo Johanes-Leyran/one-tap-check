@@ -14,7 +14,9 @@ class TimezoneAwareMixin(models.Model):
         if not self.starting_at.tzinfo:
             self.starting_at = timezone.make_aware(self.starting_at)
         
-        if self.end_at is not None and not self.end_at.tzinfo:
+        if (self.end_at is not None 
+            and not self.end_at.tzinfo):
+            
             self.end_at = timezone.make_aware(self.end_at)
             
         super().save(*args, **kwargs)
