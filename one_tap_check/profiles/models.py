@@ -15,9 +15,13 @@ class BaseProfile(models.Model):
         abstract = True
 
 
-class StudentProfile(BaseProfile):
+class SHSStudentProfile(BaseProfile):
     section = models.CharField(
         "Section of the student",
+        max_length=60,
+    )
+    strand = models.CharField(
+        "Strand of the student",
         max_length=60,
     )
     adviser = models.ForeignKey(
@@ -31,12 +35,12 @@ class StudentProfile(BaseProfile):
     }
     grade = models.Model(
         choices=GRADES_CHOICES,
-        max_length=3,
+        max_length=2,
     )
     
-    def clean(self):
-        pass
-        # TODO:think of a way to validate the adviser 
+    # def clean(self):
+    #     pass
+    #     TODO:think of a way to validate the adviser 
     
     
-    
+class StaffProfile(B)
