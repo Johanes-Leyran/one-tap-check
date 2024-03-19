@@ -1,6 +1,8 @@
 from django.contrib.auth.base_user import BaseUserManager
-
+# Todo: add feature to authenticate the rfid card of the user
 # TODO: make the manager implements custom permissions
+
+
 class OneTapUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         email = self.normalize_email(email=email)
