@@ -3,13 +3,14 @@ from django.contrib.auth import get_user_model
 # Todo: add logging system
 # Todo: add validation on models
 # Todo: study absolute urls and urls best practices
+# Todo: study about on delete
 
 
 class BaseProfile(models.Model):
     account = models.OneToOneField(
         get_user_model(),
         verbose_name="User of to the profile",
-        on_delete=models.SET_NULL, 
+        on_delete=models.SET_NULL,
         null=True
     )
 

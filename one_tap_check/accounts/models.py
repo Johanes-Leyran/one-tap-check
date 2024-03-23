@@ -1,20 +1,23 @@
 from django.db import models
 from .managers import OneTapUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-import uuid
-# Todo: study cuid2
+from utils.cuid import CUID_USER
+# Todo: Test the functionality of the OneTapUser and Tag
 
 
 class OneTapUser(AbstractBaseUser, PermissionsMixin):
-    uuid = models.UUIDField(
-        'uuid',
-        default=uuid.uuid4,
+    cuid2 = models.CharField(
+        'cuid of the user',
+        default=CUID_USER.generate,
+        max_length=CUID_USER.length,
         editable=False,
-        unique=True
+        unique=True,
+        primary_key=True
     )
     email = models.EmailField(
         'email address',
         unique=True
+
     )
     first_name = models.CharField(
         'first name',
@@ -24,22 +27,32 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
         'last name',
         max_length=60
     )
-    # Todo: add RFID tag model
-    
+
     is_superuser = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = OneTapUserManager()
-    
-    # class Meta:
-    #     permissions = [
-    #         ('can_create_n_end_session', 'Can create or end a Session in a room'),
-    #     ]
 
-    def __str__(self):
+    # Todo: Custom Permissions
+
+    def __str__(self) -> models.EmailField:
         return self.email
-    
+
+    class Meta:
+        permissions: list = [
+            (
+                "set_student_status",
+                "status of the user as a student"
+            ),
+            (
+                "set_teacher_status",
+                "status of the user as a teacher"
+            ),
+            (
+                "set_staff_status",
+                "status of the user as a staff"
+            )
+        ]
