@@ -3,10 +3,17 @@ from rooms.models import Room
 from django.contrib.auth import get_user_model
 from mixins.TimezoneAwareMixin import TimezoneAwareMixin
 from django.utils import timezone
-# Todo: make this more easy to read and adjust
+from utils.cuid import CUID_ATTENDANCE, CUID_ATTENDEE
 
 
 class Attendance(TimezoneAwareMixin):
+    cuid2 = models.CharField(
+        default=CUID_ATTENDANCE.generate,
+        max_length=CUID_ATTENDANCE.length,
+        editable=False,
+        unique=True,
+        primary_key=True
+    )
     room = models.ForeignKey(
         Room,
         on_delete=models.SET_NULL,
@@ -27,6 +34,13 @@ class Attendance(TimezoneAwareMixin):
 
 
 class Attendee(TimezoneAwareMixin):
+    cuid2 = models.CharField(
+        default=CUID_ATTENDEE.generate,
+        max_length=CUID_ATTENDEE.length,
+        editable=False,
+        unique=True,
+        primary_key=True
+    )
     attendance = models.ForeignKey(
         Attendance,
         on_delete=models.CASCADE,
@@ -40,7 +54,7 @@ class Attendee(TimezoneAwareMixin):
     starting_at = models.DateTimeField(default=timezone.now)  # time in
     end_at = models.DateTimeField(null=True)  # time out
     
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"Attendee: {self.user.last_name} at Room: {self.attendance.room.name}"
         )

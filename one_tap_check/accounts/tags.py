@@ -25,5 +25,6 @@ class Tag(models.Model):
             has no access to the tag. 
             """
         ),
+        default=False
     )
 

@@ -3,6 +3,7 @@ from .managers import OneTapUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from utils.cuid import CUID_USER
 # Todo: Test the functionality of the OneTapUser and Tag
+# Todo: Add archive
 
 
 class OneTapUser(AbstractBaseUser, PermissionsMixin):
@@ -36,23 +37,21 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
 
     objects = OneTapUserManager()
 
-    # Todo: Custom Permissions
-
     def __str__(self) -> models.EmailField:
         return self.email
 
     class Meta:
         permissions: list = [
             (
-                "set_student_status",
+                "accounts.set_student_status",
                 "status of the user as a student"
             ),
             (
-                "set_teacher_status",
+                "accounts.set_teacher_status",
                 "status of the user as a teacher"
             ),
             (
-                "set_staff_status",
+                "accounts.set_staff_status",
                 "status of the user as a staff"
             )
         ]
