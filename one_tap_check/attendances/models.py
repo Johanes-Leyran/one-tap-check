@@ -1,9 +1,11 @@
 from django.db import models
 from rooms.models import Room
 from django.contrib.auth import get_user_model
-from mixins.TimezoneAwareMixin import TimezoneAwareMixin
+from mixins.timeawarezonemixin import TimezoneAwareMixin
 from django.utils import timezone
 from utils.cuid import CUID_ATTENDANCE, CUID_ATTENDEE
+# Todo: archive the data when deleted
+# Todo: index the models for speed
 
 
 class Attendance(TimezoneAwareMixin):
@@ -25,7 +27,10 @@ class Attendance(TimezoneAwareMixin):
         null=True
     )
     starting_at = models.DateField(default=timezone.now)
-    end_at = models.DateField(null=True)
+    end_at = models.DateField(
+        default=None,
+        null=True
+    )
     
     def __str__(self):
         return (
@@ -51,9 +56,14 @@ class Attendee(TimezoneAwareMixin):
         null=True,
         on_delete=models.CASCADE
     )
-    starting_at = models.DateTimeField(default=timezone.now)  # time in
+    starting_at = models.DateTimeField(  # time in
+        default=timezone.now,
+    )
     end_at = models.DateTimeField(null=True)  # time out
-    
+
+    def time_out(self) -> None:
+        self.end_at = timezone.now()
+
     def __str__(self) -> str:
         return (
             f"Attendee: {self.user.last_name} at Room: {self.attendance.room.name}"
