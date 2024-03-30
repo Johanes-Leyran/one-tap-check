@@ -1,5 +1,5 @@
 from cuid2 import Cuid
-
+import re
 
 
 class CUID2:
@@ -21,9 +21,18 @@ class CUID2:
     def generate(self) -> str:
         return f"{self.prefix}-{self.cuid.generate()}"
 
+    def validate(self, target: str):
+        if len(target) != self.length:
+            return False
+
+        pattern = re.compile(r'^{}-[a-z0-9]+$'.format(self.prefix))
+        return bool(pattern.match(target))
+
 
 CUID_USER: CUID2 = CUID2(length=35, prefix="user")
 CUID_ROOM: CUID2 = CUID2(length=25, prefix="room")
 CUID_TAG: CUID2 = CUID2(length=30, prefix="tag")
-CUID_ATTENDANCE: CUID2 = CUID2(length=25, prefix="att")
-CUID_ATTENDEE: CUID2 = CUID2(length=15, prefix="at")
+CUID_ATTENDANCE: CUID2 = CUID2(length=35, prefix="att")
+CUID_ATTENDEE: CUID2 = CUID2(length=25, prefix="at")
+CUID_SCHEDULE: CUID2 = CUID2(length=25, prefix="sched")
+CUID_SCHEDULE_UNIT: CUID2 = CUID2(length=25, prefix="schu")
