@@ -26,7 +26,9 @@ class Room(models.Model):
     )
     name = models.CharField(max_length=128)
     is_available = models.BooleanField(default=True)
-    at_floor = models.IntegerField(validators=[MinValueValidator(1)])
+    at_floor = models.IntegerField(
+        validators=[MinValueValidator(1)]
+    )
     
     def __str__(self) -> str:
         return (

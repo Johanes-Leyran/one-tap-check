@@ -9,9 +9,13 @@ from django.contrib.auth import get_user_model
 class BaseProfile(models.Model):
     account = models.OneToOneField(
         get_user_model(),
-        verbose_name="User of to the profile",
+        verbose_name="Account connected to the profile",
         on_delete=models.SET_NULL,
         null=True
+    )
+    gender = models.CharField(
+        verbose_name="Gender of the user",
+        max_length=6
     )
 
     def get_username(self):
@@ -56,7 +60,7 @@ class SHSTeacherProfile(BaseProfile):
         max_length=120,
     )
 
-    # Todo: add more fields for the teacher model
+    # add more fields
 
     def get_advisory_students(self):
         return SHSStudentProfile.objects.filter(adviser=self.account)
