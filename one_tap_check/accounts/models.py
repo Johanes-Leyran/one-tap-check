@@ -28,6 +28,25 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
         'last name',
         max_length=60
     )
+    GENDER_CHOICES = (
+        ("F", "Female"),
+        ("M", "Male")
+    )
+    gender = models.CharField(
+        choices=GENDER_CHOICES,
+        verbose_name="Gender of the user",
+        max_length=6
+    )
+    section = models.ForeignKey(
+        "profiles.Section",
+        verbose_name="Section of the user",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    subjects = models.ManyToManyField(
+        "profiles.Subject",
+        verbose_name="Subjects designated to the user"
+    )
 
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

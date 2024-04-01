@@ -19,12 +19,14 @@ class Attendance(TimezoneAwareMixin):
     room = models.ForeignKey(
         Room,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name="attendances"
     )
     teacher = models.ForeignKey(
         get_user_model(),
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name="attendance_records"
     )
     starting_at = models.DateField(default=timezone.now)
     end_at = models.DateField(
@@ -49,7 +51,7 @@ class Attendee(TimezoneAwareMixin):
     attendance = models.ForeignKey(
         Attendance,
         on_delete=models.CASCADE,
-        related_name='attendees'
+        related_name='attended_records'
     )
     user = models.ForeignKey(
         get_user_model(),

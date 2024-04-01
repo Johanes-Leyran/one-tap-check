@@ -6,17 +6,35 @@ from utils.cuid import CUID_SCHEDULE, CUID_SCHEDULE_UNIT
 
 
 class ScheduleSheet(TimezoneAwareMixin):
-    user = models.OneToOneField(
+    cuid2 = models.CharField(
+        default=CUID_SCHEDULE.generate,
+        max_length=CUID_SCHEDULE.length,
+        primary_key=True,
+        editable=False,
+        unique=True
+    )
+    users = models.ManyToManyField(
         get_user_model(),
-        on_delete=models.SET_NULL,
-        null=True
+        related_name="schedules"
     )
     name = models.CharField(max_length=120)
+    """
+        starting_at: the start where this schedule will be implemented
+        
+        end_at: the end of the schedule implementation
+    """
     starting_at = models.DateField()
     end_at = models.DateField()
 
 
 class ScheduleUnit(TimezoneAwareMixin):
+    cuid2 = models.CharField(
+        default=CUID_SCHEDULE_UNIT.generate,
+        max_length=CUID_SCHEDULE_UNIT.length,
+        primary_key=True,
+        editable=False,
+        unique=True
+    )
     schedule = models.ForeignKey(
         ScheduleSheet,
         on_delete=models.CASCADE
@@ -35,20 +53,24 @@ class ScheduleUnit(TimezoneAwareMixin):
     )
     starting_at = models.DateTimeField()
     end_at = models.DateTimeField()
-        
     DAYS_CHOICES = [
         ('M', 'Monday'),
-        ('T', 'Tuesday'),
+        ('Tu', 'Tuesday'),
         ('W', 'Wednesday'),
         ('Th', 'Thursday'),
         ('F', 'Friday'),
-        ('S', 'Saturday'),
+        ('Sa', 'Saturday'),
         ('Su', 'Sunday')
     ]
-    
     at_day = models.CharField(
         max_length=9,
         choices=DAYS_CHOICES,
-        verbose_name="Day"
+        verbose_name="Day of the schedule"
+    )
+    subject = models.ForeignKey(
+        "profiles.Subject",
+        verbose_name="Subject of the schedule unit",
+        on_delete=models.SET_NULL,
+        null=True
     )
        

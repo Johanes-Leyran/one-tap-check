@@ -6,32 +6,14 @@ from django.contrib.auth import get_user_model
 # Todo: study about on delete
 
 
-class BaseProfile(models.Model):
+class SHSStudentProfile(models.Model):
     account = models.OneToOneField(
         get_user_model(),
         verbose_name="Account connected to the profile",
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name="student_profile"
     )
-    gender = models.CharField(
-        verbose_name="Gender of the user",
-        max_length=6
-    )
-
-    def get_username(self):
-        if self.account:
-            return (
-                f"{self.account.last_name}, {self.account.first_name}"
-            )
-        return False
-
-    # Todo: add logs field
-
-    class Meta:
-        abstract = True
-
-
-class SHSStudentProfile(BaseProfile):
     adviser = models.ForeignKey(
         get_user_model(),
         verbose_name="Adviser of the student",
@@ -48,19 +30,32 @@ class SHSStudentProfile(BaseProfile):
         max_length=2,
         choices=GRADE_CHOICES
     )
-    section = models.CharField(
-        verbose_name='Section of the Student',
-        max_length=30
+
+
+class SHSTeacherProfile(models.Model):
+    account = models.OneToOneField(
+        get_user_model(),
+        verbose_name="Account connected to the profile",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="teacher_profile"
     )
-
-
-class SHSTeacherProfile(BaseProfile):
     department = models.CharField(
         verbose_name='Department of the Teacher',
         max_length=120,
     )
 
-    # add more fields
 
-    def get_advisory_students(self):
-        return SHSStudentProfile.objects.filter(adviser=self.account)
+class StaffProfile(models.Model):
+    account = models.OneToOneField(
+        get_user_model(),
+        verbose_name="Account connected to the profile",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="staff_profile"
+    )
+    role = models.CharField(
+        verbose_name="Role of the staff",
+        max_length=120
+    )
+
