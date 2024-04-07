@@ -55,7 +55,10 @@ class StaffProfile(models.Model):
         related_name="staff_profile"
     )
     role = models.CharField(
-        verbose_name="Role of the staff",
+        verbose_name="Role of the Staff",
         max_length=120
     )
-
+    department = models.CharField(
+        verbose_name='Department of the Staff',
+        max_length=120,
+    )

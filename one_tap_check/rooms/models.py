@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from utils.cuid import CUID_ROOM, CUID_SCANNER
 from simple_history.models import HistoricalRecords
+# Todo: Index the models
 
 
 class Building(models.Model):

@@ -29,11 +29,11 @@ class CUID2:
         return bool(pattern.match(target))
 
 
-CUID_USER: CUID2 = CUID2(length=35, prefix="user")
+CUID_USER: CUID2 = CUID2(length=45, prefix="user")
 CUID_ROOM: CUID2 = CUID2(length=25, prefix="room")
-CUID_TAG: CUID2 = CUID2(length=30, prefix="tag")
-CUID_ATTENDANCE: CUID2 = CUID2(length=35, prefix="att")
+CUID_TAG: CUID2 = CUID2(length=35, prefix="tag")
+CUID_ATTENDANCE: CUID2 = CUID2(length=25, prefix="att")
 CUID_ATTENDEE: CUID2 = CUID2(length=25, prefix="at")
 CUID_SCHEDULE: CUID2 = CUID2(length=25, prefix="sched")
 CUID_SCHEDULE_UNIT: CUID2 = CUID2(length=25, prefix="schu")
-CUID_SCANNER: CUID2 = CUID2(length=25, prefix="sca")
+CUID_SCANNER: CUID2 = CUID2(length=30, prefix="sca")

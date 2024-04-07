@@ -3,3 +3,4 @@ venv
 !**/migrations
 !**/migrations/__init__.py
 **/__pycache__/
+one_tap_check/data_management

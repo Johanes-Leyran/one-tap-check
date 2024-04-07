@@ -46,7 +46,7 @@ def main():
                 # delete all the files inside except for the __init__.py
                 if not file.name == '__init__.py':
                     os.remove(file.path)
-                    print(f"\t --- deleted: {file.name} \n")
+                    print(f"\t --- deleted --- : {file.name} \n")
 
         else:
             print(f"{current_path} does not exists")
