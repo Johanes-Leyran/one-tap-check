@@ -14,8 +14,8 @@ class SHSStudentProfile(models.Model):
         null=True,
         related_name="student_profile"
     )
-    adviser = models.ForeignKey(
-        get_user_model(),
+    advisor = models.ForeignKey(
+        'profiles.SHSTeacherProfile',
         verbose_name="Adviser of the student",
         related_name="advisory_students",
         on_delete=models.SET_NULL,
@@ -30,6 +30,12 @@ class SHSStudentProfile(models.Model):
         max_length=2,
         choices=GRADE_CHOICES
     )
+    section = models.ForeignKey(
+        'profiles.Section',
+        on_delete=models.SET_NULL,
+        related_name='students',
+        null=True
+    )
 
 
 class SHSTeacherProfile(models.Model):
@@ -40,9 +46,21 @@ class SHSTeacherProfile(models.Model):
         null=True,
         related_name="teacher_profile"
     )
-    department = models.CharField(
+    department = models.ForeignKey(
+        'profiles.Department',
         verbose_name='Department of the Teacher',
-        max_length=120,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    section = models.OneToOneField(
+        'profiles.Section',
+        on_delete=models.SET_NULL,
+        related_name='advisor',
+        null=True
+    )
+    subject = models.ManyToManyField(
+        'profiles.Subject',
+        related_name='teachers'
     )
 
 
@@ -58,7 +76,9 @@ class StaffProfile(models.Model):
         verbose_name="Role of the Staff",
         max_length=120
     )
-    department = models.CharField(
+    department = models.ForeignKey(
+        'profiles.Department',
         verbose_name='Department of the Staff',
-        max_length=120,
+        null=True,
+        on_delete=models.SET_NULL
     )

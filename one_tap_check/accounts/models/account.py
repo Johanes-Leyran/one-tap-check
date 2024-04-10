@@ -37,16 +37,6 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
         verbose_name="Gender of the user",
         max_length=6
     )
-    section = models.ForeignKey(
-        "profiles.Section",
-        verbose_name="Section of the user",
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    subjects = models.ManyToManyField(
-        "profiles.Subject",
-        verbose_name="Subjects designated to the user"
-    )
 
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -62,15 +52,15 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         permissions: list = [
             (
-                "accounts.set_student_status",
+                "set_student_status",
                 "status of the user as a student"
             ),
             (
-                "accounts.set_teacher_status",
+                "set_teacher_status",
                 "status of the user as a teacher"
             ),
             (
-                "accounts.set_staff_status",
+                "set_staff_status",
                 "status of the user as a staff"
             )
         ]

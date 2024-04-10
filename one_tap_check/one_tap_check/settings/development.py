@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SIMPLE_HISTORY_HISTORY_ID_USE_UUID = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'schedules',
     'rooms',
     'attendances',
+    'one_tap_api',
     'rest_framework',
     'simple_history',
     'django.contrib.admin',

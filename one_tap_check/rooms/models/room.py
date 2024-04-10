@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from utils.cuid import CUID_ROOM, CUID_SCANNER
 from simple_history.models import HistoricalRecords
-# Todo: Index the models
+from .scanner import Scanner
 
 
 class Building(models.Model):
@@ -11,26 +11,6 @@ class Building(models.Model):
     
     def __str__(self):
         return f'Building: {self.name}'
-
-
-class Scanner(models.Model):
-    cuid2 = models.CharField(
-        primary_key=True,
-        default=CUID_SCANNER.generate,
-        max_length=CUID_SCANNER.length,
-        editable=False,
-        unique=True
-    )
-    STATUS_CHOICE = (
-        ("WORKING", "Working"),
-        ("NOT WORKING", "Not Working"),
-        ("BARELY WORKING", "Barely Working")
-    )
-    status = models.CharField(
-        choices=STATUS_CHOICE,
-        max_length=14
-    )
-    is_active = models.BooleanField(default=True)
 
 
 class Room(models.Model):

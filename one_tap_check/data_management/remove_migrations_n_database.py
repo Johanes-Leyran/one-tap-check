@@ -2,7 +2,8 @@ from pathlib import Path
 import os
 
 
-BASE_PATH: Path = Path(__file__).parent.parent
+BASE_PATH: Path = Path(__file__).resolve().parent.parent
+
 print(
     "\033[93m" + """ 
 ------ WARNING ------
