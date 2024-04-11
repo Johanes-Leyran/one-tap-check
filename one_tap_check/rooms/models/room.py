@@ -22,12 +22,12 @@ class Room(models.Model):
         unique=True
     )
     building = models.ForeignKey(
-        Building,
+        'rooms.Building',
         on_delete=models.PROTECT,
         related_name='rooms',
     )
     scanner = models.OneToOneField(
-        Scanner,
+        'rooms.Scanner',
         verbose_name="Scanner designated to the room",
         on_delete=models.PROTECT,
         related_name="designated_room"

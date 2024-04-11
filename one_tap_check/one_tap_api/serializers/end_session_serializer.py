@@ -1,15 +1,16 @@
 from rest_framework import serializers
-from utils.cuid import CUID_SCANNER, CUID_TAG
+from utils.cuid import CUID_SCANNER, CUID_TAG, CUID_ATTENDANCE
 
 
-class CreateSessionSerializer(serializers.Serializer):
+class EndSessionSerializer(serializers.Serializer):
     purpose = serializers.CharField()
     scanner_id = serializers.CharField()
+    attendance_id = serializers.CharField()
     tag_id = serializers.CharField()
     time = serializers.DateTimeField()
 
     def validate_purpose(self, value) -> serializers.ValidationError | str:
-        if value != "CREATE_SESSION":
+        if value != "END_SESSION":
             return serializers.ValidationError("Purpose is not aligned")
 
         return value
@@ -22,6 +23,12 @@ class CreateSessionSerializer(serializers.Serializer):
 
     def validate_tag_id(self, value) -> serializers.ValidationError | str:
         if not CUID_TAG.validate(value):
+            return serializers.ValidationError("Tag ID is invalid")
+
+        return value
+
+    def validate_attendance_id(self, value) -> serializers.ValidationError | str:
+        if not CUID_ATTENDANCE.validate(value):
             return serializers.ValidationError("Attendance ID is invalid")
 
         return value

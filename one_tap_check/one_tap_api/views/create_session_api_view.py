@@ -6,16 +6,17 @@ from ..serializers.create_session_serializer import CreateSessionSerializer
 from accounts.models.tag import Tag
 from rooms.models.scanner import Scanner
 from attendance.models.attendance import Attendance
-from ..authentication import authenticate_model
+from ..authentication import authenticate_each_models
+# Todo: make them async
 
 
 class CreateSessionApiView(APIView):
-    def post(self, requests):
+    def post(self, request) -> Response:
         data = {
-            'purpose': requests.data.get('purpose'),
-            'device_id': requests.date.get('device_id'),
-            'tag_id': requests.data.get('tag_id'),
-            'time_at': requests.data.get('time')
+            'purpose': request.data.get('purpose'),
+            'scanner_id': request.date.get('scanner_id'),
+            'tag_id': request.data.get('tag_id'),
+            'time_at': request.data.get('time_at')
         }
 
         serializer = CreateSessionSerializer(data=data)
@@ -30,22 +31,38 @@ class CreateSessionApiView(APIView):
         tag_id = serializer.validated_data.get('tag_id')
         scanner_id = serializer.validated_data.get('device_id')
 
-        # authenticate the tag and the device id
-        try:
-            tag = authenticate_model(Tag, tag_id)
-            scanner = authenticate_model(Scanner, scanner_id)
+        # Todo: add a notification if the tag is compromised
 
-        except Http404 as e:
+        all_authenticated, results = authenticate_each_models(
+            (Tag, tag_id),
+            (Scanner, scanner_id)
+        )
+
+        if not all_authenticated:
             return Response(
-                {'Error': str(e)},
+                data={
+                    "Error": f'{results}'
+                },
                 status=status.HTTP_404_NOT_FOUND
             )
+
+        tag, scanner = results
 
         # get the user of the tag and the room of the scanner
         user = tag.user
         room = scanner.designated_room
 
+        # check if the room is available
+        if not room.is_available:
+            return Response(
+                data={
+                    "Error": f"Room {room.name} is occupied"
+                },
+                status=status.HTTP_409_CONFLICT
+            )
+
         attended_at = serializer.validated_data.get('time_at')
+        purpose = serializer.validated_data.get('purpose')
 
         # check if the user has permission to create a session
         if user.has_perm('accounts.set_teacher_status') and user and room:
@@ -54,22 +71,23 @@ class CreateSessionApiView(APIView):
                 teacher=user,
                 starting_at=attended_at
             )
+
             # update the availability of that room
             room.is_available = False
             room.save()
 
+            return Response(
+                data={
+                    'Message': f'Created a session on room {room.name}',
+                    'Attendance ID': attendance.pk
+                },
+                status=status.HTTP_201_CREATED
+            )
+
         else:
             return Response(
                 data={
-                    'Error': f'User {user.last_name} has no permission to create a session'
+                    'Error': f'User {user.last_name} has no permission for {purpose}'
                 },
                 status=status.HTTP_401_UNAUTHORIZED
             )
-
-        return Response(
-            data={
-                'Message': f'Created a session on room {room.name}',
-                'Attendance ID': attendance.pk
-            },
-            status=status.HTTP_201_CREATED
-        )

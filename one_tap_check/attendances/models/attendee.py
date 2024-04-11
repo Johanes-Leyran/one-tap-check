@@ -29,7 +29,10 @@ class Attendee(TimezoneAwareMixin):
     starting_at = models.DateTimeField(  # time in
         default=timezone.now,
     )
-    end_at = models.DateTimeField(null=True)  # time out
+    end_at = models.DateTimeField( # time out
+        null=True,
+        default=None
+    )
 
     def time_out(self) -> None:
         self.end_at = timezone.now()

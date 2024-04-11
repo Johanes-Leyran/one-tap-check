@@ -4,7 +4,7 @@ from utils.cuid import CUID_SCANNER, CUID_TAG, CUID_ATTENDANCE
 
 class AttendSessionSerializer(serializers.Serializer):
     purpose = serializers.CharField()
-    device_id = serializers.CharField()
+    scanner_id = serializers.CharField()
     tag_id = serializers.CharField()
     attendance_id = serializers.CharField()
     time = serializers.DateTimeField()
@@ -15,7 +15,7 @@ class AttendSessionSerializer(serializers.Serializer):
 
         return value
 
-    def validate_device_id(self, value) -> serializers.ValidationError | str:
+    def validate_scanner_id(self, value) -> serializers.ValidationError | str:
         if not CUID_SCANNER.validate(value):
             return serializers.ValidationError("Device ID is invalid")
 
