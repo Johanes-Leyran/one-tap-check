@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rooms.models.room import Room
 
+# Todo: Make a permission separate from the models
+# Todo: Add permissions for each models
 
 class Attendance(TimezoneAwareMixin):
     cuid2 = models.CharField(

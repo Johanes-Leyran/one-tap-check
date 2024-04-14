@@ -59,6 +59,9 @@ class EndSessionApiView(APIView):
             attendance.end_at = time_at
             attendance.save()
 
+            # set all the attendees end_at
+            attendance.attendee_records.update(end_at=time_at)
+
             return Response(
                 data={
                     'Message' f'Ended session at room {room.name}'

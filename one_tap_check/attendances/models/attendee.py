@@ -19,7 +19,7 @@ class Attendee(TimezoneAwareMixin):
     attendance = models.ForeignKey(
         Attendance,
         on_delete=models.CASCADE,
-        related_name='attended_records'
+        related_name='attendee_records'
     )
     user = models.ForeignKey(
         get_user_model(),
@@ -29,7 +29,7 @@ class Attendee(TimezoneAwareMixin):
     starting_at = models.DateTimeField(  # time in
         default=timezone.now,
     )
-    end_at = models.DateTimeField( # time out
+    end_at = models.DateTimeField(  # time out
         null=True,
         default=None
     )

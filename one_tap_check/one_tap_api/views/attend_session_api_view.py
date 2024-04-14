@@ -56,7 +56,9 @@ class AttendSessionApiView(APIView):
 
         # check permissions
         # Todo: be more precise on the error
+
         if user.has_perm("accounts.set_student_status") and user and room:
+
             # Todo: check if the attendance is still on going or not
 
             Attendee.objects.create(
