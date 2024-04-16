@@ -86,7 +86,8 @@ class CreateSessionApiView(APIView):
             return Response(
                 data={
                     'Message': f'Created a session on room {room.name}',
-                    'Attendance ID': attendance.pk
+                    'Attendance ID': attendance.pk,
+                    'Teacher Name': user.last_name
                 },
                 status=status.HTTP_201_CREATED
             )
@@ -94,7 +95,7 @@ class CreateSessionApiView(APIView):
         else:
             return Response(
                 data={
-                    'Error': f'User {user.last_name} has no permission for {purpose}'
+                    'Error': f'{user.last_name} has no permission for {purpose}'
                 },
                 status=status.HTTP_401_UNAUTHORIZED
             )

@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
     path('dashboard/', include('dashboard.urls')),
-    path('accounts/', include('accounts.urls'))
+    path('accounts/', include('accounts.urls')),
+    path('one_tap_api/', include('one_tap_api.urls'))
 ]
