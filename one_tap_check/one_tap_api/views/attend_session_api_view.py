@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from ..serializers.attend_session_serializer import AttendSessionSerializer
 from ..authentication import authenticate_each_models
@@ -10,6 +12,7 @@ from attendances.models.attendee import Attendee
 from notifications.signals import notify
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AttendSessionApiView(APIView):
     def post(self, request):
         data = {

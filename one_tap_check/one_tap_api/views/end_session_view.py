@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from notifications.signals import notify
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,6 +11,7 @@ from rooms.models.scanner import Scanner
 from attendances.models.attendance import Attendance
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class EndSessionApiView(APIView):
     def patch(self, request):
         data = {
