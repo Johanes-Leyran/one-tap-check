@@ -19,21 +19,22 @@
 
       <div class="info-container">
         <div class="class-info-box">
-                    <h2>Classroom Information</h2>
-                    <p><strong>Subject:</strong> {{ attendance.subject.subject_name }}</p>
-                    <p><strong>Time In:</strong> {{ attendance.starting_at }}</p>
-                    <p><strong>Time Out:</strong> {{ attendance.end_at }}</p>
-                    <p><strong>Section:</strong> {{ attendance.section.section_name }}</p>
-                  </div>
-
-                  <div class="teachers-info-box">
-                    <h2>Teachers Information</h2>
-                    <p><strong>Teacher Name:</strong> {{ user.last_name }}, {{ user.first_name }} </p>
-                    <p><strong>ID Number:</strong> 000123456</p>
-                    <button class="teachers-info-btn" onclick="openTeacherModal()">View Information</button>
-                    <button class="room-schedule-btn" onclick="openRoomScheduleModal()">Room Schedule</button>
-                </div>
+            <h2>Classroom Information</h2>
+            <p><strong>Subject:</strong> {{ attendance.subject.subject_name }}</p>
+            <p><strong>Time In:</strong> {{ attendance.starting_at }}</p>
+            <p><strong>Time Out:</strong> {{ attendance.end_at }}</p>
+            <p><strong>Section:</strong> {{ attendance.section.section_name }}</p>
         </div>
+
+          <div class="teachers-info-box">
+              <h2>Teachers Information</h2>
+              <p><strong>Teacher Name:</strong> {{ user.last_name }}, {{ user.first_name }} </p>
+              <p><strong>ID Number:</strong> 000123456</p>
+              <button class="teachers-info-btn" onclick="openTeacherModal()">View Information</button>
+              <button class="room-schedule-btn" onclick="openRoomScheduleModal()">Room Schedule</button>
+          </div>
+        </div>
+
     <!-- Teacher Modal -->
     <div id="teacherModal" class="teacher-modal">
         <div class="modal-content">
@@ -115,7 +116,7 @@
         </div>
 </main>
 <script>
-        function reloadContent() {
+    function reloadContent() {
             $.get(window.location.pathname, function(data) {
                 $('#recent-timein-table').html(data);
             });
@@ -128,5 +129,5 @@
             // Set interval to call reloadContent every 5 seconds
             setInterval(reloadContent, 5000); // 5000 milliseconds = 5 seconds
         });
-    </script>
+</script>
 {% endblock %}

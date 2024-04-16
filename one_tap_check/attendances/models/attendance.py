@@ -46,6 +46,9 @@ class Attendance(TimezoneAwareMixin):
         on_delete=models.SET_NULL,
         null=True
     )
+    on_going = models.BooleanField(
+        default=True
+    )
     history = HistoricalChanges()
 
     def __str__(self):

@@ -21,4 +21,4 @@ class Scanner(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Scanner for {self.designated_room}"
+        return f"Scanner - {self.pk}"

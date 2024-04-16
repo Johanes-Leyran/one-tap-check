@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import notifications.urls
+from django.views.generic import RedirectView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
     path('dashboard/', include('dashboard.urls')),
     path('accounts/', include('accounts.urls')),
-    path('one_tap_api/', include('one_tap_api.urls'))
+    path('one_tap_api/', include('one_tap_api.urls')),
+    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    path('', RedirectView.as_view(pattern_name='home')),
 ]

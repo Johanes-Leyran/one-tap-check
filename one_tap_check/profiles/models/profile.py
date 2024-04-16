@@ -5,12 +5,14 @@ from django.contrib.auth import get_user_model
 # Todo: study absolute urls and urls best practices
 # Todo: study about on delete
 
+# Since profile are dependent to user they must be cascade
+
 
 class SHSStudentProfile(models.Model):
     account = models.OneToOneField(
         get_user_model(),
         verbose_name="Account connected to the profile",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         related_name="student_profile"
     )
@@ -45,7 +47,7 @@ class SHSTeacherProfile(models.Model):
     account = models.OneToOneField(
         get_user_model(),
         verbose_name="Account connected to the profile",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         related_name="teacher_profile"
     )
@@ -81,7 +83,7 @@ class StaffProfile(models.Model):
     account = models.OneToOneField(
         get_user_model(),
         verbose_name="Account connected to the profile",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         related_name="staff_profile"
     )

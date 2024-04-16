@@ -37,6 +37,12 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
         verbose_name="Gender of the user",
         max_length=6
     )
+    schedule = models.OneToOneField(
+        'schedules.ScheduleSheet',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='user'
+    )
 
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

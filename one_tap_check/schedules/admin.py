@@ -3,5 +3,10 @@ from .models.schedule_unit import ScheduleUnit
 from .models.schedule_sheet import ScheduleSheet
 # Register your models here.
 
-admin.site.register(ScheduleSheet)
-admin.site.register(ScheduleUnit)
+
+class ShowPKAdmin(admin.ModelAdmin):
+    readonly_fields = ('pk',)
+
+
+admin.site.register(ScheduleSheet, ShowPKAdmin)
+admin.site.register(ScheduleUnit, ShowPKAdmin)

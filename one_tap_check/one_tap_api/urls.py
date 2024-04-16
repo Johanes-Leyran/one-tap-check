@@ -1,10 +1,8 @@
 from django.urls import path
-from .views.create_session_api_view import CreateSessionApiView
-from .views.attend_session_api_view import AttendSessionApiView
-from .views.end_session_view import EndSessionApiView
+from .views import attendances
 
 urlpatterns = [
-    path('attendance/create', CreateSessionApiView),
-    path('attendance/attend', AttendSessionApiView),
-    path('attendance/end', EndSessionApiView)
+    path('attendance/create/', attendances.create_attendance),
+    path('attendance/attend/', attendances.attend_attendance),
+    path('attendance/end/', attendances.end_attendance),
 ]

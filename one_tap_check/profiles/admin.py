@@ -4,9 +4,14 @@ from .models.section import Section
 from .models.subject import Subject
 from .models.department import Department
 
-admin.site.register(StaffProfile)
-admin.site.register(SHSTeacherProfile)
-admin.site.register(SHSStudentProfile)
-admin.site.register(Subject)
-admin.site.register(Section)
-admin.site.register(Department)
+
+class ShowPKAdmin(admin.ModelAdmin):
+    readonly_fields = ('pk',)
+
+
+admin.site.register(StaffProfile, ShowPKAdmin)
+admin.site.register(SHSTeacherProfile, ShowPKAdmin)
+admin.site.register(SHSStudentProfile, ShowPKAdmin)
+admin.site.register(Subject, ShowPKAdmin)
+admin.site.register(Section, ShowPKAdmin)
+admin.site.register(Department, ShowPKAdmin)

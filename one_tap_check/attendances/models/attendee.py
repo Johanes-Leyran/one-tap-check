@@ -1,12 +1,13 @@
 from django.db import models
 from simple_history.models import HistoricForeignKey
-
 from .attendance import Attendance
 from django.contrib.auth import get_user_model
 from mixins.time_awarezone_mixin import TimezoneAwareMixin
 from django.utils import timezone
 from utils.cuid import CUID_ATTENDEE
 from datetime import timedelta
+from django.db.models import signals
+from django.dispatch import receiver
 # Todo: archive the data when deleted
 # Todo: index the models for speed
 
@@ -36,19 +37,15 @@ class Attendee(TimezoneAwareMixin):
         null=True,
         default=None
     )
-    history = HistoricForeignKey(
-        'attendances.Attendance',
-        on_delete=models.SET_NULL,
-        null=True
-    )
     STATUS_CHOICES = (
         ("Late", "Late"),
-        ("On Time", 'One Time'),
+        ("On Time", 'On Time'),
         ("Absent", "Absent")
     )
     status = models.CharField(
         max_length=8,
-        blank=True
+        blank=True,
+        choices=STATUS_CHOICES
     )
 
     def time_out(self) -> None:
@@ -69,3 +66,9 @@ class Attendee(TimezoneAwareMixin):
         return (
             f"Attendee: {self.user.last_name} at Room: {self.attendance.room.name}"
         )
+
+
+@receiver(signal=signals.post_save, sender=Attendee)
+def set_attendee_status(sender, instance, created, **kwargs):
+    if created:
+        instance.set_status()

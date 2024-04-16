@@ -24,17 +24,22 @@ def dashboard_teacher(request, pk):
         # get the schedule this day of the week
         current_date = timezone.localtime(timezone.now())
         current_day_week = calendar.day_name[current_date.weekday()]
-        schedule_sheet = ScheduleSheet.objects.filter(users=user)
+
+        try:
+            schedule_sheet = ScheduleSheet.objects.get(user=user)
+        except ScheduleSheet.DoesNotExist:
+            schedule_sheet = None
+
         current_units = []
 
-        for sched in schedule_sheet:
-            for unit in sched.schedule_units.filter(at_day=current_day_week):
+        if schedule_sheet:
+            for unit in schedule_sheet.schedule_units.filter(at_day=current_day_week):
                 current_units.append(unit)
 
         data = {
-            'profile': user.teacher_profile,
+            'profile': user,
             'current_units': current_units,
-            'current_date': current_date.strftime('%A - %B - %Y'),
+            'current_date': current_date.strftime('%A - %B - %Y | %D'),
         }
 
         return render(request, 'dashboard/teacher/dashboard.html', data)
@@ -108,7 +113,5 @@ def attendance(request, pk, at_pk):
         data = {
             'attendance': attendance_record
         }
-
-
 
         return render(request, 'dashboard/teacher/attendance_record.html', context=data)
