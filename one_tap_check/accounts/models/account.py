@@ -41,7 +41,8 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
         'schedules.ScheduleSheet',
         on_delete=models.SET_NULL,
         null=True,
-        related_name='user'
+        related_name='user',
+        blank=True
     )
 
     is_superuser = models.BooleanField(default=False)
