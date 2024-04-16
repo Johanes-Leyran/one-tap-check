@@ -7,6 +7,7 @@ from accounts.models.tag import Tag
 from rooms.models.scanner import Scanner
 from attendance.models.attendance import Attendance
 from ..authentication import authenticate_each_models
+from notifications.signals import notify
 # Todo: make them async
 
 
@@ -31,8 +32,6 @@ class CreateSessionApiView(APIView):
         tag_id = serializer.validated_data.get('tag_id')
         scanner_id = serializer.validated_data.get('device_id')
 
-        # Todo: add a notification if the tag is compromised
-
         all_authenticated, results = authenticate_each_models(
             (Tag, tag_id),
             (Scanner, scanner_id)
@@ -52,6 +51,15 @@ class CreateSessionApiView(APIView):
         user = tag.user
         room = scanner.designated_room
 
+        attended_at = serializer.validated_data.get('time_at')
+
+        if tag.is_compromised:
+            notify.send(
+                None,
+                recipient=user,
+                verb=f"Compromised Tag is used at {room.name} at {attended_at}"
+            )
+
         # check if the room is available
         if not room.is_available:
             return Response(
@@ -61,7 +69,6 @@ class CreateSessionApiView(APIView):
                 status=status.HTTP_409_CONFLICT
             )
 
-        attended_at = serializer.validated_data.get('time_at')
         purpose = serializer.validated_data.get('purpose')
 
         # check if the user has permission to create a session

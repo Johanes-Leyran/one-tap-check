@@ -1,0 +1,132 @@
+{% extends "dashboard/dashboard_generic.html" %}
+{% load static %}
+
+{% block title %}
+    Attendance
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block extra_content %}
+<main>
+      <div class="header">
+          <div class="left">
+              <h1>Attendance Record</h1>
+          </div>
+      </div>
+
+      <div class="info-container">
+        <div class="class-info-box">
+                    <h2>Classroom Information</h2>
+                    <p><strong>Subject:</strong> {{ attendance.subject.subject_name }}</p>
+                    <p><strong>Time In:</strong> {{ attendance.starting_at }}</p>
+                    <p><strong>Time Out:</strong> {{ attendance.end_at }}</p>
+                    <p><strong>Section:</strong> {{ attendance.section.section_name }}</p>
+                  </div>
+
+                  <div class="teachers-info-box">
+                    <h2>Teachers Information</h2>
+                    <p><strong>Teacher Name:</strong> {{ user.last_name }}, {{ user.first_name }} </p>
+                    <p><strong>ID Number:</strong> 000123456</p>
+                    <button class="teachers-info-btn" onclick="openTeacherModal()">View Information</button>
+                    <button class="room-schedule-btn" onclick="openRoomScheduleModal()">Room Schedule</button>
+                </div>
+        </div>
+    <!-- Teacher Modal -->
+    <div id="teacherModal" class="teacher-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTeacherModal()">&times;</span>
+            <div class="profile-info">
+            <div class="profile-picture">
+            <img src="{% static 'img/profile-tc.png' %}" alt="Teacher Profile Picture">
+                    <p><strong>Name:</strong> {{ user.last_name }}, {{ user.first_name }} </p>
+                    <p><strong>ID Number:</strong> 000123456</p>
+                    <p><strong>Contact Number:</strong> +1234567890</p>
+                </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Room Schedule Modal -->
+    <div id="roomScheduleModal" class="teacher-modal">
+        <div class="modal-content room-schedule-modal">
+            <span class="close-modal" onclick="closeRoomScheduleModal()">&times;</span>
+            <h2>Room Schedule</h2>
+            <img src="path_to_your_image.jpg" alt="Room Schedule Image">
+        </div>
+    </div>
+
+
+        <div class="bottom-data">
+            <div class="recent-timein">
+                <div class="header">
+                  <h3>Room 101</h3>
+
+
+                    <div class="filter-container">
+                        <label for="attendance-filter">Filter:</label>
+                        <select id="attendance-filter">
+                          <option value="all">All</option>
+                          <option value="attended">On Time</option>
+                          <option value="late">Late</option>
+                          <option value="absences">Absent</option>
+                        </select>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="department-container">
+                    <div class="search-bar">
+                        <div class="filter-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search..." oninput="searchTable()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="recent-timein-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Date and Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for attendee in attendance.attendee_records.all %}
+                        <tr class="attendees-section">
+                          <td>{{ attendee.user.last_name }}, {{ attendee.user.first_name }}</td>
+                          <td>{{ attendee.starting_at }}</td>
+                          <td>{{ attendee.status }}</td>
+                        </tr>
+                        {% endfor %}
+
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="exportToExcel()">
+                                <i class='bx bx-cloud-download'></i>
+                                Export to Excel
+                            </button>
+                        </div>
+                      </tbody>
+                </table>
+            </div>
+        </div>
+</main>
+<script>
+        function reloadContent() {
+            $.get(window.location.pathname, function(data) {
+                $('#recent-timein-table').html(data);
+            });
+        }
+
+        $(document).ready(function() {
+            // Call reloadContent initially when the page loads
+            reloadContent();
+
+            // Set interval to call reloadContent every 5 seconds
+            setInterval(reloadContent, 5000); // 5000 milliseconds = 5 seconds
+        });
+    </script>
+{% endblock %}

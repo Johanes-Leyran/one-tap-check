@@ -1,0 +1,333 @@
+{% extends "generic_template.html" %}
+{% load static %}
+
+{% block title %}OneTap Check - Attendance Management System{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/Logo-w.png' %}">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth; /* Enable smooth scrolling */
+            background-color: #f1f1f1; /* Added background color */
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: #F9F9F9;
+            color: #342E37;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Added text shadow */
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links li a {
+            color: #342E37;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #3C91E6;
+        }
+
+        .section {
+            min-height: 100vh; /* Changed height to min-height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #F9F9F9;
+            color: #342E37;
+            padding: 80px 20px; /* Adjusted padding */
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow */
+            border-radius: 10px; /* Added border radius */
+            margin: 20px; /* Added margin */
+        }
+
+        .section-heading {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .section-content {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3C91E6;
+            color: #F9F9F9;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow */
+        }
+
+        .btn:hover {
+            background-color: #F9F9F9;
+            color: #3C91E6;
+            border: 2px solid #3C91E6;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Added shadow */
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-links li {
+            margin: 0 10px;
+        }
+
+        .footer-links li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links li a:hover {
+            color: #3C91E6;
+        }
+
+        #system-parts-section {
+            background-color: #F9F9F9;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow */
+            border-radius: 10px; /* Added border radius */
+            padding: 40px; /* Added padding */
+            margin-top: 20px; /* Added margin */
+        }
+
+        .system-parts {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .system-part {
+            width: 30%;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border-radius: 10px; /* Added border radius */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow */
+        }
+
+        .system-part:hover .description {
+            display: block;
+        }
+
+        .system-image {
+            width: 100%;
+            border-radius: 10px; /* Added border radius */
+            height: auto;
+        }
+
+        .description {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            width: 90%;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .team-members {
+        display: grid;
+        grid-template-columns: repeat(3, 2fr);
+        grid-gap: 20px;
+    }
+
+    .team-member {
+        padding: 20px;
+        background-color: #F9F9F9;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .member-name {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .member-role {
+        font-size: 1rem;
+        color: #777;
+    }
+
+    .black-text {
+        color: #342E37;
+    }
+
+    .blue-text {
+        color: #3C91E6;
+    }
+
+    .yellow-text {
+        color: #fef200;
+
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <header>
+        <div class="page-container">
+            <div class="logo">
+                <span class="black-text">One</span>
+                <span class="blue-text">Tap</span>
+                <span class="yellow-text">Check</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#about-section">About</a></li>
+                    <li><a href="#features-section">Features</a></li>
+                    <li><a href="#contact-section">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero-section" class="section">
+        <div class="page-container">
+            <h1 class="section-heading">Welcome to
+                <span class="black-text">One</span>
+                <span class="blue-text">Tap</span>
+                <span class="yellow-text">Check</span>
+            </h1>
+            <p class="section-content">An efficient attendance management system for educators and organizations.</p>
+            <a href="#about-section" class="btn">Learn More</a>
+            <a href="{% url 'login' %}" class="btn">Log In</a>
+        </div>
+    </section>
+
+    <section id="about-section" class="section">
+        <div class="page-container">
+            <h2 class="section-heading">About  <span class="yellow-text">Us</span></h2>
+            <p class="section-content">OneTap Check is an innovative attendance management system that utilizes Arduino technology. Our system allows educators and organizations to efficiently track attendance using a tapping mechanism.</p>
+            <p class="section-content">By integrating Arduino devices with our software, users can easily record attendance with just a tap. Our system provides real-time insights and analytics to help optimize attendance tracking processes.</p>
+            <a href="#system-parts-section" class="btn">Discover System Parts</a>
+        </div>
+    </section>
+    <section id="system-parts-section" class="section">
+        <div class="page-container">
+            <h2 class="section-heading"><span class="blue-text">System</span> Parts</h2>
+            <p class="section-content">The Arduino device is the heart of the OneTap Check system. It serves as the central controller responsible for managing attendance data. With its wireless communication capabilities, it interacts seamlessly with RFID tags and other peripherals. Housed in a protective case, it ensures durability and stability.</p>
+            <div class="system-parts">
+                <div class="system-parts">
+                    <div class="system-part">
+                        <img src="/assets/images/arduino.jpg" alt="Arduino Device" class="system-image">
+                        <div class="description">The Arduino device is the central component of the OneTap Check system. It serves as the main controller responsible for managing attendance data. The Arduino is equipped with wireless communication capabilities, allowing it to interact with RFID tags and other peripherals. Additionally, it can be housed in a protective case to ensure durability and stability.</div>
+                    </div>
+                    <div class="system-part">
+                        <img src="/assets/images/rfid.jpg" alt="RFID Device" class="system-image">
+                        <div class="description">RFID (Radio-Frequency Identification) technology is used to uniquely identify objects or individuals wirelessly. In the OneTap Check system, RFID tags are assigned to users and are tapped on the Arduino device to record attendance. These tags operate at a frequency of 13.56MHz, providing fast and reliable communication with the RC522 module.</div>
+                    </div>
+                    <div class="system-part">
+                        <img src="/assets/images/rc522.jpg" alt="RC522 Module" class="system-image">
+                        <div class="description">The RC522 module serves as the intermediary between the RFID tags and the Arduino board. It facilitates communication by reading data from the tags and transmitting it to the Arduino for processing. </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team-section" class="section">
+        <div class="page-container">
+            <h2 class="section-heading">Our <span class="blue-text">Team</span></h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <div class="member-name">Charles Andrew Cabral</div>
+                    <div class="member-role"><span class="blue-text">UI | Front-End</span></div>
+                </div>
+                <div class="team-member">
+                    <div class="member-name">Gracco Aloba</div>
+                    <div class="member-role"><span class="blue-text">Hardware | Documents</span></div>
+                </div>
+                <div class="team-member">
+                    <div class="member-name">Manuel Balmes</div>
+                    <div class="member-role"><span class="blue-text">Documents | Presentations</span></div>
+                </div>
+                <div class="team-member">
+                    <div class="member-name">Johanes Lawrence Leyran</div>
+                    <div class="member-role"><span class="blue-text">Back-End | API | Data-Base</span></div>
+                </div>
+                <div class="team-member">
+                    <div class="member-name">George Miguel Remolona</div>
+                    <div class="member-role"><span class="blue-text">Documentation</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="page-container">
+            <p>&copy; 2024 OneTap Check. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+    </footer>
+{% endblock %}

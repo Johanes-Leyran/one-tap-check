@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+# admin@email.com
+# admin
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # added another .parent
 
@@ -31,6 +34,7 @@ SIMPLE_HISTORY_HISTORY_ID_USE_UUID = True
 
 # Application definition
 INSTALLED_APPS = [
+    'dashboard',
     'accounts',
     'profiles',
     'schedules',
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'simple_history',
     'django.contrib.admin',
     'django.contrib.auth',
+    'notifications',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -62,7 +67,9 @@ ROOT_URLCONF = 'one_tap_check.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'pages/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,12 +135,17 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'pages/static',
+]
+
+LOGIN_URL = '/accounts/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

@@ -8,3 +8,6 @@ class Section(models.Model):
         primary_key=True,
         unique=True
     )
+
+    def __str__(self):
+        return f"Section - {self.section_name}"

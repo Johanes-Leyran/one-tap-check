@@ -19,3 +19,6 @@ class Scanner(models.Model):
         max_length=14
     )
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Scanner for {self.designated_room}"

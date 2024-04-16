@@ -13,9 +13,10 @@ class ScheduleUnit(TimezoneAwareMixin):
     )
     schedule = models.ForeignKey(
         'schedules.ScheduleSheet',
+        related_name='schedule_units',
         on_delete=models.CASCADE
     )
-    rooms = models.ForeignKey(
+    room = models.ForeignKey(
         'rooms.Room',
         on_delete=models.SET_NULL,
         null=True
@@ -27,13 +28,13 @@ class ScheduleUnit(TimezoneAwareMixin):
         null=True
     )
     DAYS_CHOICES = [
-        ('M', 'Monday'),
-        ('Tu', 'Tuesday'),
-        ('W', 'Wednesday'),
-        ('Th', 'Thursday'),
-        ('F', 'Friday'),
-        ('Sa', 'Saturday'),
-        ('Su', 'Sunday')
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday')
     ]
     at_day = models.CharField(
         max_length=9,
@@ -53,3 +54,6 @@ class ScheduleUnit(TimezoneAwareMixin):
     )
     starting_at = models.DateTimeField()
     end_at = models.DateTimeField()
+
+    def __str__(self):
+        return f'sched unit - {self.schedule.name}'

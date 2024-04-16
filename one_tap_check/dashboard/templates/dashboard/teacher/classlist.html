@@ -1,0 +1,22 @@
+{% extends "dashboard/dashboard_generic.html" %}
+{% load static %}
+
+{% block title %}Dashboard - Teacher{% endblock %}
+
+{% block extra_content %}
+  <div class="class-lists">
+  <h2 class="head-class-lists">Your Class Lists</h2>
+    <div class="class-lists-container">
+
+      {% for section in sections %}
+      <div class="class-box class-1">
+        <img src="{% static 'img/team.png' %}" alt="" class="classlists-img">
+        <h2 class="class-lists-name">{{section.section_name}}</h2>
+        <a href="path to details" class="class-details-btn">Details</a>
+        <a href="path to attendance records">Attendance Records</a>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+{% endblock %}

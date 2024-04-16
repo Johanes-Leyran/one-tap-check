@@ -1,0 +1,56 @@
+{% load static %}
+{% load notifications_tags %}
+
+<nav class="navbar">
+    <div class="logo_item">
+      <img src="{% static 'img/Logo-b.png' %}" alt=""></i>
+      <div class="logo-name">One<span class="Tap">Tap</span>
+        <br><span class="Check">Check</span> </div>
+    </div>
+    <div class="navbar_content">
+        <ul class="notification-drop">
+            <li class="item">
+                <i class='bx bxs-bell' aria-hidden="true" id="notification-bell"></i>
+
+                {% if live_notify_badge %}
+                <span class="btn__badge pulse-button">{% live_notify_badge %}</span>
+                {% endif %}
+            </li>
+        </ul>
+
+        <div class="dropdown-container">
+            <details class="dropdown right">
+                <summary class="avatar">
+                    <img src="{% static 'img/default_profile_icon.jpg' %}">
+                </summary>
+            <ul>
+                <li>
+                    <p>
+                        {{ user.last_name }}
+                        <br>
+                        <span class="block italic">Teacher</span>
+                    </p>
+                </li>
+                <!-- Menu links -->
+                <li>
+                    <a href="#">
+                     Account
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                      Settings
+                    </a>
+                </li>
+                <!-- Optional divider -->
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                         Logout
+                    </a>
+                </li>
+            </ul>
+        </details>
+    </div>
+</div>
+</nav>

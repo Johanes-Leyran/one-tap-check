@@ -7,3 +7,6 @@ class Department(models.Model):
         max_length=120,
     )
 
+    def __str__(self):
+        return self.department_name
+

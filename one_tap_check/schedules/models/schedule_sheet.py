@@ -20,7 +20,10 @@ class ScheduleSheet(TimezoneAwareMixin):
     """
         starting_at: the start where this schedule will be implemented
 
-        end_at: the end of the schedule implementation
+        end_at: the end of the schedules implementation
     """
     starting_at = models.DateField()
     end_at = models.DateField()
+
+    def __str__(self):
+        return f'Schedule {self.name}'

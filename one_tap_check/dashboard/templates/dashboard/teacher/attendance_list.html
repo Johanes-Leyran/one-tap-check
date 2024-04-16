@@ -1,0 +1,119 @@
+{% extends "dashboard/dashboard_generic.html" %}
+
+{% block extra_content %}
+    <main>
+      <div class="header">
+          <div class="left">
+              <h1> Attendance Records</h1>
+              <ul class="breadcrumb">
+                  <li><a href="#">
+                         Class Attendance Records
+                      </a></li>
+              </ul>
+          </div>
+      </div>
+
+              <div class="archive-table-container">
+                <h2>Archived Information</h2>
+                <div class="table-actions">
+                    <div class="delete-recover-buttons">
+                        <button class="recover-btn" style="display: none;">Recover</button>
+                        <button class="delete-btn" style="display: none;">Archive</button>
+                    </div>
+                    <button class="download-btn">Download Excel</button>
+                </div>
+                <table class="archive-table">
+                    <thead>
+                        <tr>
+                            <th>Select All<input type="checkbox" id="selectAllActionCheckbox"></th>
+                            <th>Date</th>
+                            <th>Room</th>
+                            <th>Section</th>
+                            <th>Start At</th>
+                            <th>End At</th>
+                            <th>Attendees</th>
+                            <th>Late</th>
+                            <th>Absents</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for attendance in attendances %}
+                        <tr>
+                            <td><input type="checkbox" class="record-checkbox"></td>
+                            <td>
+                                <a href="{% url 'attendance_view' pk=user.pk at_pk=attendance.pk %}">
+                                    Attendance Records - January 2024
+                                </a>
+                            </td>
+                            <td>{{ attendance.room.name }}</td>
+                            <td>{{ attendance.section.section_name }}</td>
+                            <td>{{ attendance.starting_at }}</td>
+                            <td>{{ attendance.end_at }}</td>
+                            <td>10</td>
+                            <td>5</td>
+                            <td>3</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="deletion-note">
+                <p>Note: Remaining days (up to 30 days) will be displayed before permanent deletion.</p>
+            </div>
+            </main>
+            </div>
+
+            <footer>
+                <div class="footer-content">
+                    <p>&copy; 2024 OneTap Check. All rights reserved.</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </footer>
+        <script>
+        // JavaScript
+        const selectAllActionCheckbox = document.getElementById('selectAllActionCheckbox');
+        const deleteBtn = document.querySelector('.delete-btn');
+        const recoverBtn = document.querySelector('.recover-btn');
+        const recordCheckboxes = document.querySelectorAll('.record-checkbox');
+
+        selectAllActionCheckbox.addEventListener('change', () => {
+            const isChecked = selectAllActionCheckbox.checked;
+            deleteBtn.style.display = isChecked ? 'block' : 'none';
+            recoverBtn.style.display = isChecked ? 'block' : 'none';
+
+            // Check/uncheck all record checkboxes based on the select all checkbox in the action column
+            recordCheckboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+        });
+
+        // Optional: Show/hide action buttons when individual record checkboxes are checked
+        recordCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const anyChecked = [...recordCheckboxes].some(checkbox => checkbox.checked);
+                deleteBtn.style.display = anyChecked ? 'block' : 'none';
+                recoverBtn.style.display = anyChecked ? 'block' : 'none';
+            });
+        });
+
+        document.querySelector('.download-btn').addEventListener('click', () => {
+            const table = document.querySelector('.archive-table');
+            const tableHTML = table.outerHTML;
+
+            // Convert table HTML to a Blob
+            const blob = new Blob([tableHTML], { type: 'application/vnd.ms-excel' });
+
+            // Create download link
+            const downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = 'archived_information.xls';
+
+            // Trigger download
+            downloadLink.click();
+        });
+    </script>
+{% endblock %}

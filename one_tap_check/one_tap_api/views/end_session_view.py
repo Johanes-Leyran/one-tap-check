@@ -1,3 +1,4 @@
+from notifications.signals import notify
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -53,6 +54,13 @@ class EndSessionApiView(APIView):
 
         time_at = serializer.validated_data.get('time_at')
         purpose = serializer.validated_data.get('purpose')
+
+        if tag.is_compromised:
+            notify.send(
+                None,
+                recipient=user,
+                verb=f"Compromised Tag is used at {room.name} at {time_at}"
+            )
 
         # find the attendance and set end_at
         if user.has_perm('accounts.set_teacher_status') and user:

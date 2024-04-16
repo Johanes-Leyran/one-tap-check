@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from utils.cuid import CUID_ROOM, CUID_SCANNER
 from simple_history.models import HistoricalRecords
-from .scanner import Scanner
 
 
 class Building(models.Model):
@@ -34,7 +33,10 @@ class Room(models.Model):
     )
     name = models.CharField(max_length=128)
     is_available = models.BooleanField(default=True)
-    description = models.TextField(verbose_name="The description of the room")
+    description = models.TextField(
+        verbose_name="The description of the room",
+        blank=True
+    )
     at_floor = models.IntegerField(
         validators=[MinValueValidator(1)]
     )

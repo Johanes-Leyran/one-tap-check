@@ -20,6 +20,7 @@ class OneTapUserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_staff", True)
 
         user = self.create_user(email, password, **extra_fields)
         """

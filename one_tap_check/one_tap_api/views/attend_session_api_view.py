@@ -7,6 +7,7 @@ from accounts.models.tag import Tag
 from rooms.models.scanner import Scanner
 from attendance.models.attendance import Attendance
 from attendance.models.attendee import Attendee
+from notifications.signals import notify
 
 
 class AttendSessionApiView(APIView):
@@ -57,15 +58,25 @@ class AttendSessionApiView(APIView):
         # check permissions
         # Todo: be more precise on the error
 
+        if tag.is_compromised:
+            notify.send(
+                None,
+                recipient=attendance.teacher,
+                verb=f"Compromised Tag is used at {room.name} at {time_at}"
+            )
+
         if user.has_perm("accounts.set_student_status") and user and room:
 
             # Todo: check if the attendance is still on going or not
 
-            Attendee.objects.create(
+            attendee = Attendee.objects.create(
                 user=user,
                 attendance=attendance,
                 start_at=time_at
             )
+
+            attendee.set_status()
+            attendee.save()
 
             return Response(
                 data={
