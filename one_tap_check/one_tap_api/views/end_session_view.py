@@ -13,7 +13,7 @@ from attendances.models.attendance import Attendance
 
 @csrf_exempt
 class EndSessionApiView(APIView):
-    def patch(self, request):
+    def patch(self, request, format=None):
         data = {
             'purpose': request.data.get('purpose'),
             'scanner_id': request.date.get('scanner_id'),

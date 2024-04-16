@@ -14,7 +14,7 @@ from notifications.signals import notify
 
 @csrf_exempt
 class AttendSessionApiView(APIView):
-    def post(self, request):
+    def post(self, request, format=None):
         data = {
             'purpose': request.data.get('purpose'),
             'scanner_id': request.date.get('scanner_id'),
