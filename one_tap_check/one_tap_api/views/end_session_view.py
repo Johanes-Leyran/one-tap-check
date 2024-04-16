@@ -6,7 +6,7 @@ from ..serializers.end_session_serializer import EndSessionSerializer
 from ..authentication import authenticate_each_models
 from accounts.models.tag import Tag
 from rooms.models.scanner import Scanner
-from attendance.models.attendance import Attendance
+from attendances.models.attendance import Attendance
 
 
 class EndSessionApiView(APIView):

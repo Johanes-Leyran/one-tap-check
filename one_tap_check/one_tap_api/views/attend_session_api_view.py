@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from accounts.models.tag import Tag
 from rooms.models.scanner import Scanner
-from attendance.models.attendance import Attendance
-from attendance.models.attendee import Attendee
+from attendances.models.attendance import Attendance
+from attendances.models.attendee import Attendee
 from notifications.signals import notify
 
 

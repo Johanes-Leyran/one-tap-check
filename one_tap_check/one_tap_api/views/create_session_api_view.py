@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from ..serializers.create_session_serializer import CreateSessionSerializer
 from accounts.models.tag import Tag
 from rooms.models.scanner import Scanner
-from attendance.models.attendance import Attendance
+from attendances.models.attendance import Attendance
 from ..authentication import authenticate_each_models
 from notifications.signals import notify
 # Todo: make them async
