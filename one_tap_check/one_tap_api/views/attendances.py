@@ -183,7 +183,7 @@ def attend_attendance(request):
         )
 
 
-@api_view(['PATCH'])
+@api_view(['POST'])
 def end_attendance(request):
     serializer = AttendAndEndAttendanceSerializer(data=request.data)
 
