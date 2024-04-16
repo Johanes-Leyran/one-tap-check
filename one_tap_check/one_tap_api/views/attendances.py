@@ -34,7 +34,7 @@ def create_attendance(request):
             user = get_object_or_404(user_model, tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "User not found", "Error": e},
+                data={"Message": "User not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -42,7 +42,7 @@ def create_attendance(request):
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": e},
+                data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -50,7 +50,7 @@ def create_attendance(request):
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Room not found", "Error": e},
+                data={"Message": "Room not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -119,7 +119,7 @@ def attend_attendance(request):
             user = get_object_or_404(user_model, tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": e},
+                data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -127,7 +127,7 @@ def attend_attendance(request):
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": e},
+                data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -135,7 +135,7 @@ def attend_attendance(request):
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Room not found", "Error": e},
+                data={"Message": "Room not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -143,7 +143,7 @@ def attend_attendance(request):
             attendance = get_object_or_404(Attendance, pk=serializer.validated_data['attendance_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Attendance not found", "Error": e},
+                data={"Message": "Attendance not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -202,7 +202,7 @@ def end_attendance(request):
             user = get_object_or_404(user_model, tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": e},
+                data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -210,7 +210,7 @@ def end_attendance(request):
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": e},
+                data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -218,7 +218,7 @@ def end_attendance(request):
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Room not found", "Error": e},
+                data={"Message": "Room not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -226,7 +226,7 @@ def end_attendance(request):
             attendance = get_object_or_404(Attendance, pk=serializer.validated_data['attendance_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Attendance not found", "Error": e},
+                data={"Message": "Attendance not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
