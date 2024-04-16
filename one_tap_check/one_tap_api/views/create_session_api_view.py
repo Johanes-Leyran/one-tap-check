@@ -13,7 +13,7 @@ from notifications.signals import notify
 # Todo: make them async
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@csrf_exempt
 class CreateSessionApiView(APIView):
     def post(self, request) -> Response:
         data = {

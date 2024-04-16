@@ -12,7 +12,7 @@ from attendances.models.attendee import Attendee
 from notifications.signals import notify
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@csrf_exempt
 class AttendSessionApiView(APIView):
     def post(self, request):
         data = {

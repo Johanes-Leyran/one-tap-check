@@ -11,7 +11,7 @@ from rooms.models.scanner import Scanner
 from attendances.models.attendance import Attendance
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@csrf_exempt
 class EndSessionApiView(APIView):
     def patch(self, request):
         data = {
