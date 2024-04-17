@@ -16,6 +16,10 @@ class SHSStudentProfile(models.Model):
         null=True,
         related_name="student_profile"
     )
+    student_number = models.CharField(
+        max_length=120,
+        blank=True
+    )
     advisor = models.ForeignKey(
         'profiles.SHSTeacherProfile',
         verbose_name="Adviser of the student",
@@ -50,6 +54,10 @@ class SHSTeacherProfile(models.Model):
         on_delete=models.CASCADE,
         null=True,
         related_name="teacher_profile"
+    )
+    teacher_number = models.CharField(
+        max_length=120,
+        blank=True
     )
     department = models.ForeignKey(
         'profiles.Department',
@@ -86,6 +94,10 @@ class StaffProfile(models.Model):
         on_delete=models.CASCADE,
         null=True,
         related_name="staff_profile"
+    )
+    staff_number = models.CharField(
+        max_length=120,
+        blank=True
     )
     role = models.CharField(
         verbose_name="Role of the Staff",
