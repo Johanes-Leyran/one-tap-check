@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from attendances.models.attendee import Attendee
 # Todo: add logging system
 # Todo: add validation on models
 # Todo: study absolute urls and urls best practices
@@ -42,6 +43,15 @@ class SHSStudentProfile(models.Model):
         related_name='students',
         null=True
     )
+
+    def count_on_time(self):
+        return Attendee.objects.filter(user=self.account, status='On Time').count()
+
+    def count_absent_time(self):
+        return Attendee.objects.filter(user=self.account, status='Absent').count()
+
+    def count_late_time(self):
+        return Attendee.objects.filter(user=self.account, status='Late').count()
 
     def __str__(self):
         return f'Student Profile: {self.account.last_name}'
