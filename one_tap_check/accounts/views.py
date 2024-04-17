@@ -1,4 +1,7 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from .forms import LogInForm
 from django import forms
 from django.contrib.auth import logout, login, authenticate
@@ -19,13 +22,9 @@ def login_user(request):
 
                 role = form.cleaned_data['role']
                 if role == 'ADMIN':
-                    # redirect to admin
-                    pass
+                    return HttpResponseRedirect(reverse('admin:index'))
                 elif role == 'TEACHER':
                     return redirect('teacher_dashboard', pk=user.pk)
-                elif role == 'STAFF':
-                    pass
-                    # redirect to staff
                 else:
                     form.add_error('role', "Role is invalid")
 
