@@ -26,10 +26,10 @@ class CreateAttendanceSerializer(serializers.Serializer):
         tag_id = attrs.get('tag_id')
 
         if not CUID_SCANNER.validate(device_id):
-            errors['device_id'] = 'Device ID is not valid'
+            errors['device_id'] = 'Device ID is invalid'
 
         if not CUID_TAG.validate(tag_id):
-            errors['tag_id'] = "Tag ID is not valid"
+            errors['tag_id'] = "Tag ID is invalid"
 
         if errors:
             raise serializers.ValidationError(errors)
@@ -50,15 +50,19 @@ class AttendAndEndAttendanceSerializer(serializers.Serializer):
         device_id = attrs.get('device_id')
         tag_id = attrs.get('tag_id')
         attendance_id = attrs.get('attendance_id')
+        purpose = attrs.get('purpose')
+
+        if purpose not in LIST_PURPOSE:
+            errors['purpose'] = 'Purpose is invalid'
 
         if not CUID_SCANNER.validate(device_id):
-            errors['device_id'] = 'Device ID is not valid'
+            errors['device_id'] = 'Device ID is invalid'
 
         if not CUID_TAG.validate(tag_id):
-            errors['tag_id'] = "Tag ID is not valid"
+            errors['tag_id'] = "Tag ID is invalid"
 
         if not CUID_ATTENDANCE.validate(attendance_id):
-            errors['tag_id'] = "Tag ID is not valid"
+            errors['tag_id'] = "Tag ID is invalid"
 
         if errors:
             raise serializers.ValidationError(errors)

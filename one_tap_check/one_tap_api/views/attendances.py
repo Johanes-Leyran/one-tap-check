@@ -22,22 +22,13 @@ def create_attendance(request):
 
     if serializer.is_valid():
 
-        if not serializer.validated_data['purpose'] == "CREATE_SESSION":
+        if serializer.validated_data['purpose'] != "CREATE_SESSION":
             return Response(
                 data={"Message": "Purpose is wrong"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
             )
-        # authenticate data
-        user_model = get_user_model()
 
-        try:
-            user = get_object_or_404(user_model, tags__pk=serializer.validated_data['tag_id'])
-        except Http404 as e:
-            return Response(
-                data={"Message": "User not found", "Error": str(e)},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
+        # authenticate tag
         try:
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
@@ -46,6 +37,7 @@ def create_attendance(request):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        # authenticate the scanner
         try:
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
@@ -55,35 +47,65 @@ def create_attendance(request):
             )
 
         room = scanner.designated_room
+        user = tag.user
+
+        if not room:
+            return Response(
+                data={"Message": "Scanner has no room"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # send notif of compromised tag is used
-        if tag.is_compromised:
+        if tag.is_compromised and not user:
             notify.send(
                 sender=None,
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
+        else:
+            notify.send(
+                sender=None,
+                recipient=user,
+                verb=f"Compromised tag is used at {room.name}"
+            )
+
+        # if tag has no associated user
+        if not user:
+            return Response(
+                data={"Message": "Tag has no user"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if room.is_available:
-            # find the nearest schedule
             time_in = serializer.validated_data['time_in']
 
+            # find the nearest schedule
             schedule_unit = get_nearest_schedule(user, time_in)
 
-            if not schedule_unit:
-                attendance = Attendance.objects.create(
-                    room=room,
-                    teacher=user,
+            try:
+                if not schedule_unit:
+                    attendance = Attendance.objects.create(
+                        room=room,
+                        teacher=user
+                    )
 
+                else:
+                    attendance = Attendance.objects.create(
+                        room=room,
+                        teacher=user,
+                        section=schedule_unit.section,
+                        subject=schedule_unit.subject
+                    )
+
+            # if creating attendance fail
+            except Exception as e:
+                return Response(
+                    data={
+                        "Message": f"{type(e)}",
+                        "Details": f"When creating attendance exception raised: {str(e)}"
+                    },
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
-
-            # create attendance
-            attendance = Attendance.objects.create(
-                room=room,
-                teacher=user,
-                section=schedule_unit.section,
-                subject=schedule_unit.subject
-            )
 
             room.is_available = False
             room.save()
@@ -115,20 +137,10 @@ def attend_attendance(request):
 
     if serializer.is_valid():
 
-        if not serializer.validated_data['purpose'] == "ATTEND_SESSION":
+        if not serializer.validated_data['purpose'] != "ATTEND_SESSION":
             return Response(
                 data={"Message": "Purpose is wrong"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
-            )
-        # authenticate data
-        user_model = get_user_model()
-
-        try:
-            user = get_object_or_404(user_model, tags__pk=serializer.validated_data['tag_id'])
-        except Http404 as e:
-            return Response(
-                data={"Message": "Tag not found", "Error": str(e)},
-                status=status.HTTP_404_NOT_FOUND
             )
 
         try:
@@ -155,17 +167,38 @@ def attend_attendance(request):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        user = tag.user
         room = scanner.designated_room
 
+        if not room:
+            return Response(
+                data={"Message": "Scanner has no room"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # send notif of compromised tag is used
-        if tag.is_compromised:
+        if tag.is_compromised and not user:
             notify.send(
                 sender=None,
-                recipient=attendance.teacher,
+                recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
+            )
+        else:
+            notify.send(
+                sender=None,
+                recipient=user,
+                verb=f"Compromised tag is used at {room.name}"
+            )
+
+        # if tag has no associated user
+        if not user:
+            return Response(
+                data={"Message": "Tag has no user"},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         if attendance.on_going:
+
             # if still available
             Attendee.objects.create(
                 attendance=attendance,
@@ -180,7 +213,7 @@ def attend_attendance(request):
 
         else:
             return Response(
-                data={"Message": "Attendance is closed"},
+                data={"Message": "Attendance over"},
                 status=status.HTTP_409_CONFLICT
             )
 
@@ -197,23 +230,13 @@ def end_attendance(request):
 
     if serializer.is_valid():
 
-        if not serializer.validated_data['purpose'] == "END_SESSION":
+        if serializer.validated_data['purpose'] != "END_SESSION":
             return Response(
                 data={"Message": "Purpose is wrong"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
             )
 
         # authenticate data
-        user_model = get_user_model()
-
-        try:
-            user = get_object_or_404(user_model, tags__pk=serializer.validated_data['tag_id'])
-        except Http404 as e:
-            return Response(
-                data={"Message": "Tag not found", "Error": str(e)},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
         try:
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
@@ -239,13 +262,33 @@ def end_attendance(request):
             )
 
         room = scanner.designated_room
+        user = tag.user
+
+        if not room:
+            return Response(
+                data={"Message": "Scanner has no room"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # send notif of compromised tag is used
-        if tag.is_compromised:
+        if tag.is_compromised and not user:
             notify.send(
                 sender=None,
-                recipient=attendance.teacher,
+                recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
+            )
+        else:
+            notify.send(
+                sender=None,
+                recipient=user,
+                verb=f"Compromised tag is used at {room.name}"
+            )
+
+        # if tag has no associated user
+        if not user:
+            return Response(
+                data={"Message": "Tag has no user"},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         # close the attendance
@@ -253,9 +296,12 @@ def end_attendance(request):
         attendance.end_at = serializer.validated_data['time_in']
         attendance.save()
 
+        # get all the attendee that has not tap out but tapped in
+        # they will be marked as absent
         Attendee.objects.filter(
-            attendance__pk=attendance.pk
-        ).update(end_at=serializer.validated_data['time_in'])
+            attendance__pk=attendance.pk,
+            end_at__is_null=True
+        ).update(status="Absent")
 
         # update the availability of the room
         room.is_available = True

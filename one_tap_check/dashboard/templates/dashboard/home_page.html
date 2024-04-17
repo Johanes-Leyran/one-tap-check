@@ -9,6 +9,24 @@
     <link rel="icon" type="image/x-icon" href="{% static 'img/Logo-w.png' %}">
     <style>
         /* Global Styles */
+        @media screen and (max-width: 768px) {
+        .team-members {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .member-name {
+            font-size: 1rem;
+        }
+
+            .member-role {
+                font-size: 0.8rem;
+            }
+        }
+        @media screen and (max-width: 576px) {
+            .team-members {
+                grid-template-columns: 1fr;
+            }
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;

@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 from .models.schedule_sheet import ScheduleSheet
 from django.contrib.auth import get_user_model
 from django.db.models import DateTimeField
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 import calendar
 
 """
@@ -22,7 +25,8 @@ def get_nearest_schedule(teacher: get_user_model(), date_time: DateTimeField):
         current_day_schedule_unit = ScheduleSheet.objects.get(pk=schedule.pk)
         current_day_schedule_unit = current_day_schedule_unit.schedule_units.filter(at_day=current_day)
 
-    except Exception:
+    # if schedule is not available return none
+    except ObjectDoesNotExist:
         return None
 
     nearest_schedule_unit = None
@@ -35,5 +39,9 @@ def get_nearest_schedule(teacher: get_user_model(), date_time: DateTimeField):
         if lowest_time_difference is None or lowest_time_difference > difference:
             lowest_time_difference = difference
             nearest_schedule_unit = schedule_unit
+
+    # if the difference of nearest schedule is too high
+    if lowest_time_difference > timedelta(minutes=35).total_seconds():
+        return None
 
     return nearest_schedule_unit
