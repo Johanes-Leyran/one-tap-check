@@ -37,6 +37,12 @@ def create_attendance(request):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        if not user.has_perm("accounts.set_teacher_status"):
+            return Response(
+                data={"Message": f"{user.last_name} no auth"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         try:
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
@@ -150,8 +156,14 @@ def attend_attendance(request):
             user = get_object_or_404(get_user_model(), tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "User not found", "Error": str(e)},
+                data={"Message": "User not found"},
                 status=status.HTTP_404_NOT_FOUND
+            )
+
+        if not user.has_perm("accounts.set_student_status"):
+            return Response(
+                data={"Message": f"{user.last_name} no auth"},
+                status=status.HTTP_401_UNAUTHORIZED
             )
 
         try:
@@ -259,6 +271,12 @@ def end_attendance(request):
             return Response(
                 data={"Message": "User not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
+            )
+
+        if not user.has_perm("accounts.set_teacher_status"):
+            return Response(
+                data={"Message": f"{user.last_name} no auth"},
+                status=status.HTTP_401_UNAUTHORIZED
             )
 
         # authenticate data
