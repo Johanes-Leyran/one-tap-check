@@ -26,6 +26,7 @@ class Attendance(TimezoneAwareMixin):
     )
     section = models.ForeignKey(
         'profiles.Section',
+        related_name='attendances',
         null=True,
         on_delete=models.SET_NULL,
         blank=True,
