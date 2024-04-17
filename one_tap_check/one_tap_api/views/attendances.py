@@ -115,7 +115,8 @@ def create_attendance(request):
             return Response(
                 data={
                     "Message": "Attendance Created",
-                    "attendance_id": attendance.pk
+                    "attendance_id": attendance.pk,
+                    "teacher_name": user.last_name
                 },
                 status=status.HTTP_201_CREATED
             )
