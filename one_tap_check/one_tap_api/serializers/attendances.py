@@ -46,10 +46,6 @@ class AttendAndEndAttendanceSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         errors = {}
-        purpose = attrs.get('purpose')
-
-        if purpose not in LIST_PURPOSE:
-            errors['purpose'] = 'Purpose is invalid'
 
         device_id = attrs.get('device_id')
         tag_id = attrs.get('tag_id')
