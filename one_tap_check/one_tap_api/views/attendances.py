@@ -30,7 +30,7 @@ def create_attendance(request):
 
         # authenticate tag
         try:
-            user = get_object_or_404(get_user_model(), tag__pk=serializer.validated_data['tag_id'])
+            user = get_object_or_404(get_user_model(), tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
                 data={"Message": "User not found", "Error": str(e)},
@@ -146,7 +146,7 @@ def attend_attendance(request):
             )
 
         try:
-            user = get_object_or_404(get_user_model(), tag__pk=serializer.validated_data['tag_id'])
+            user = get_object_or_404(get_user_model(), tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
                 data={"Message": "User not found", "Error": str(e)},
@@ -253,7 +253,7 @@ def end_attendance(request):
             )
 
         try:
-            user = get_object_or_404(get_user_model(), tag__pk=serializer.validated_data['tag_id'])
+            user = get_object_or_404(get_user_model(), tags__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
                 data={"Message": "User not found", "Error": str(e)},
