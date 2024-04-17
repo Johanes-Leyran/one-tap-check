@@ -28,6 +28,7 @@ class Attendance(TimezoneAwareMixin):
         'profiles.Section',
         null=True,
         on_delete=models.SET_NULL,
+        blank=True,
     )
     teacher = models.ForeignKey(
         get_user_model(),

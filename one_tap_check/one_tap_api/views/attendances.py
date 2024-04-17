@@ -67,7 +67,15 @@ def create_attendance(request):
         if room.is_available:
             # find the nearest schedule
             time_in = serializer.validated_data['time_in']
+
             schedule_unit = get_nearest_schedule(user, time_in)
+
+            if not schedule_unit:
+                attendance = Attendance.objects.create(
+                    room=room,
+                    teacher=user,
+
+                )
 
             # create attendance
             attendance = Attendance.objects.create(

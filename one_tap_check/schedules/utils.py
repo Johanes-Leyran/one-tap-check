@@ -17,8 +17,13 @@ def get_nearest_schedule(teacher: get_user_model(), date_time: DateTimeField):
     current_day = calendar.day_name[current_time.weekday()]
 
     # get all the schedule within that day
-    current_day_schedule_unit = ScheduleSheet.objects.get(pk=schedule.pk)
-    current_day_schedule_unit = current_day_schedule_unit.schedule_units.filter(at_day=current_day)
+
+    try:
+        current_day_schedule_unit = ScheduleSheet.objects.get(pk=schedule.pk)
+        current_day_schedule_unit = current_day_schedule_unit.schedule_units.filter(at_day=current_day)
+
+    except Exception:
+        return None
 
     nearest_schedule_unit = None
     lowest_time_difference = None
