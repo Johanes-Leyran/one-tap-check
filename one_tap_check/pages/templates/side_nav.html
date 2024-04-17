@@ -6,7 +6,7 @@
         <div class="menu_title menu_teacher"></div>
 
         <li class="item">
-          <a href="{% url 'teacher_class_schedules' pk=user.pk %}" class="nav_link submenu_item">
+          <a href="{% url 'schedules_list' pk=user.pk %}" class="nav_link submenu_item">
             <span class="navlink_icon">
                 <i class='bx bx-time'></i>
             </span>
@@ -15,7 +15,7 @@
         </li>
 
         <li class="item">
-            <a href="{% url 'teacher_class_list' pk=user.pk %}" class="nav_link submenu_item">
+            <a href="{% url 'section_list' pk=user.pk %}" class="nav_link submenu_item">
               <span class="navlink_icon">
                 <i class='bx bxs-user-detail' ></i>
               </span>
