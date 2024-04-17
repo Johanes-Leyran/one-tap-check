@@ -36,6 +36,8 @@ def create_attendance(request):
                 data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
+        except Exception as e:
+            print(e)
 
         # authenticate the scanner
         try:
@@ -45,6 +47,8 @@ def create_attendance(request):
                 data={"Message": "Scanner not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
+        except Exception as e:
+            print(e)
 
         room = scanner.designated_room
         user = tag.user
@@ -56,7 +60,7 @@ def create_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if tag.is_compromised and user:
+        if user and tag.is_compromised:
             notify.send(
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
