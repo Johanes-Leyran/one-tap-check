@@ -26,11 +26,16 @@ def get_nearest_schedule(teacher: get_user_model(), date_time: DateTimeField):
         current_day_schedule_unit = current_day_schedule_unit.schedule_units.filter(at_day=current_day)
 
     # if schedule is not available return none
-    except ObjectDoesNotExist:
+    except:
         return None
 
     nearest_schedule_unit = None
     lowest_time_difference = None
+
+    if current_day_schedule_unit is None:
+        # means there are no schedule units assign today
+        # or no schedule unit available
+        return None
 
     # find the nearest
     for schedule_unit in current_day_schedule_unit:
