@@ -30,10 +30,10 @@ def create_attendance(request):
 
         # authenticate tag
         try:
-            user = get_object_or_404(get_user_model(), pk=serializer.validated_data['tag_id'])
+            user = get_object_or_404(get_user_model(), tag__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": str(e)},
+                data={"Message": "User not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -146,10 +146,10 @@ def attend_attendance(request):
             )
 
         try:
-            user = get_object_or_404(get_user_model(), pk=serializer.validated_data['tag_id'])
+            user = get_object_or_404(get_user_model(), tag__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": str(e)},
+                data={"Message": "User not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -253,10 +253,10 @@ def end_attendance(request):
             )
 
         try:
-            user = get_object_or_404(get_user_model(), pk=serializer.validated_data['tag_id'])
+            user = get_object_or_404(get_user_model(), tag__pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Tag not found", "Error": str(e)},
+                data={"Message": "User not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -286,7 +286,6 @@ def end_attendance(request):
             )
 
         room = scanner.designated_room
-        user = tag.user
 
         if not room:
             return Response(
