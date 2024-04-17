@@ -6,8 +6,9 @@ from django.utils import timezone
 
 class TimezoneAwareMixin(models.Model):
     def clean(self):
-        if self.starting_at >= self.end_at:
-            raise ValidationError("starting date must not be ahead of end date")
+        if self.starting_at and self.end_at:
+            if self.starting_at >= self.end_at:
+                raise ValidationError("starting date must not be ahead of end date")
 
     def save(self, *args, **kwargs):
         if not isinstance(self.starting_at, datetime.datetime):
