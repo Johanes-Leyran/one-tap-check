@@ -73,7 +73,7 @@ def create_attendance(request):
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
-        elif user:
+        else:
             notify.send(
                 sender=None,
                 recipient=user,
