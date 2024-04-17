@@ -36,8 +36,6 @@ def create_attendance(request):
                 data={"Message": "Tag not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
-        except Exception as e:
-            print(e)
 
         # authenticate the scanner
         try:
@@ -47,8 +45,19 @@ def create_attendance(request):
                 data={"Message": "Scanner not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
-        except Exception as e:
-            print(e)
+
+        # check if they are none
+        if not tag:
+            return Response(
+                data={"Message": "Tag is none"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if not scanner:
+            return Response(
+                data={"Message": "Scanner is none"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         room = scanner.designated_room
         user = tag.user
