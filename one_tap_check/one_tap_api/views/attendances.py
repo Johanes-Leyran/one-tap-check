@@ -224,7 +224,7 @@ def attend_attendance(request):
             )
 
             return Response(
-                data={"Message": "Attended"},
+                data={"Message": "Attended", "student_name": user.last_name},
                 status=status.HTTP_201_CREATED
             )
 
