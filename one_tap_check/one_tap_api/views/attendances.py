@@ -96,7 +96,7 @@ def create_attendance(request):
                 attendance = Attendance.objects.create(
                     room=room,
                     teacher=user,
-                    time_in=time_in
+                    starting_at=time_in
                 )
 
             # if creating attendance fail
