@@ -1,0 +1,50 @@
+{% extends 'dashboard/dashboard_generic.html' %}
+
+{% block title %}Dashboard - Teacher{% endblock %}
+
+{% block extra_head %}
+<style>
+    .clickable:hover {
+        background-color: var(--blue);
+        cursor: pointer;
+    }
+
+</style>
+{% endblock %}
+
+{% block extra_content %}
+    <div class="class-table-container">
+        <h2 class="class-table-heading">All CLasses</h2>
+        <hr class="table-divider">
+        <table class="class-table">
+            <thead>
+                <tr>
+                    <th class="subject-column">SUBJECT</th>
+                    <th class="time-column">START</th>
+                    <th class="time-column">END</th>
+                    <th class="room-column">ROOM</th>
+                    <th class="section-column">SECTION</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for unit in units.all %}
+                <tr class="clickable" id="clickable">
+                    <td>{{ unit.subject.subject_name }}</td>
+                    <td>{{ unit.starting_at }}</td>
+                    <td>{{ unit.end_at }}</td>
+                    <td>{{ unit.room.name }}</td>
+                    <td>{{ unit.section.section_name }}</td>
+                </tr>
+
+            <script>
+            document.getElementById("clickable").addEventListener('click', function (event) {
+                window.location.replace('');
+            });
+            </script>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

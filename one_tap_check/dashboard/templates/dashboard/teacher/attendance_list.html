@@ -1,10 +1,14 @@
 {% extends "dashboard/dashboard_generic.html" %}
 
+{% block title %}
+    Attendance - {{ section }}
+{% endblock %}
+
 {% block extra_content %}
     <main>
       <div class="header">
           <div class="left">
-              <h1> Attendance Records</h1>
+              <h1> Attendance Records of {{ section }}</h1>
               <ul class="breadcrumb">
                   <li><a href="#">
                          Class Attendance Records

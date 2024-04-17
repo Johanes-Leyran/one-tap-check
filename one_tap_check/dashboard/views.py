@@ -37,7 +37,7 @@ def dashboard_teacher(request, pk):
                 current_units.append(unit)
 
         data = {
-            'profile': user,
+            'user': user,
             'current_units': current_units,
             'current_date': current_date.strftime('%A - %B - %Y | %D'),
         }
@@ -45,6 +45,30 @@ def dashboard_teacher(request, pk):
         return render(request, 'dashboard/teacher/dashboard.html', data)
 
 
+@login_required
+def class_schedules(request, pk):
+    user_id = pk
+    user_model = get_user_model()
+    user = user_model.objects.get(pk=user_id)
+
+    if user.has_perm('accounts.set_teacher_status'):
+
+        try:
+            schedule_sheet = ScheduleSheet.objects.get(user=user)
+        except ScheduleSheet.DoesNotExist:
+            schedule_sheet = None
+
+        units = schedule_sheet.schedule_units
+
+        data = {
+            'user': user,
+            'units': units
+        }
+
+        return render(request, 'dashboard/teacher/class_schedule.html', data)
+
+
+@login_required
 def dashboard_teacher_class_list(request, pk):
     user_id = pk
     user_model = get_user_model()
@@ -60,15 +84,18 @@ def dashboard_teacher_class_list(request, pk):
             }
             return render(request, 'generic_error.html', data)
 
+        sections = Section.objects.all()
+        print(sections[0].teacher_profiles)
+
         data = {
-            'profile': user.teacher_profile,
-            'sections': 'section'
+            'user': user,
+            'sections': sections.all()
         }
 
         return render(request, 'dashboard/teacher/classlist.html', context=data)
 
 
-def attendance_list(request, pk):
+def attendance_list(request, pk, section):
     user_id = pk
 
     user_model = get_user_model()
@@ -78,12 +105,14 @@ def attendance_list(request, pk):
 
         data = {
             "user": user,
-            "attendances": user.attendance_records.all()
+            "section": section,
+            "attendances": user.attendance_records.filter(section=section)
         }
 
         return render(request, 'dashboard/teacher/attendance_list.html', context=data)
 
 
+@login_required
 def attendance(request, pk, at_pk):
     user_id = pk
     attendance_id = at_pk
@@ -111,6 +140,7 @@ def attendance(request, pk, at_pk):
             return render(request, 'generic_error.html', data)
 
         data = {
+            'user': user,
             'attendance': attendance_record
         }
 
