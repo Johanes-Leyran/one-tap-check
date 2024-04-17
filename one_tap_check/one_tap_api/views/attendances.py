@@ -76,18 +76,18 @@ def create_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if user and tag.is_compromised:
-            notify.send(
-                sender=None,
-                recipient=user,
-                verb=f"Compromised tag of {user.last_name} is used at {room.name}"
-            )
-        else:
-            notify.send(
-                sender=None,
-                recipient=user,
-                verb=f"Compromised tag is used at {room.name}"
-            )
+        # if user and tag.is_compromised:
+        #     notify.send(
+        #         sender=None,
+        #         recipient=user,
+        #         verb=f"Compromised tag of {user.last_name} is used at {room.name}"
+        #     )
+        # else:
+        #     notify.send(
+        #         sender=None,
+        #         recipient=user,
+        #         verb=f"Compromised tag is used at {room.name}"
+        #     )
 
         if room.is_available:
             time_in = serializer.validated_data['time_in']
