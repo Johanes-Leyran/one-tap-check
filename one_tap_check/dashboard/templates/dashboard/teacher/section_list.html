@@ -14,7 +14,7 @@
         <h2 class="class-lists-name">{{section.section_name}}</h2>
         <a href="path to details" class="class-details-btn">Details</a>
         <a href="{% url  'section_view' pk=user.pk name=section.pk  %}" class="class-details-btn">Detail</a>
-        <a href="{% url 'attendance_list' pk=user.pk name=section.pk %}">Attendance</a>
+        <a href="{% url 'attendance_list' pk=user.pk section=section.pk %}">Attendance</a>
       </div>
       {% endfor %}
 
