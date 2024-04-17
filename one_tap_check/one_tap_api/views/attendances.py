@@ -30,6 +30,14 @@ def create_attendance(request):
 
         # authenticate tag
         try:
+            user = get_object_or_404(get_user_model(), pk=serializer.validated_data['tag_id'])
+        except Http404 as e:
+            return Response(
+                data={"Message": "Tag not found", "Error": str(e)},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
@@ -60,18 +68,10 @@ def create_attendance(request):
             )
 
         room = scanner.designated_room
-        user = tag.user
 
         if not room:
             return Response(
                 data={"Message": "Scanner has no room"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # if tag has no associated user
-        if not user:
-            return Response(
-                data={"Message": "Tag has no user"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -92,23 +92,12 @@ def create_attendance(request):
         if room.is_available:
             time_in = serializer.validated_data['time_in']
 
-            # find the nearest schedule
-            schedule_unit = get_nearest_schedule(user, time_in)
-
             try:
-                if not schedule_unit:
-                    attendance = Attendance.objects.create(
-                        room=room,
-                        teacher=user
-                    )
-
-                else:
-                    attendance = Attendance.objects.create(
-                        room=room,
-                        teacher=user,
-                        section=schedule_unit.section,
-                        subject=schedule_unit.subject
-                    )
+                attendance = Attendance.objects.create(
+                    room=room,
+                    teacher=user,
+                    time_in=time_in
+                )
 
             # if creating attendance fail
             except Exception as e:
