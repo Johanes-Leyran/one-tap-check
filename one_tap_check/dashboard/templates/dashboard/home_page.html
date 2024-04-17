@@ -258,13 +258,6 @@
                 <span class="blue-text">Tap</span>
                 <span class="yellow-text">Check</span>
             </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#about-section">About</a></li>
-                    <li><a href="#features-section">Features</a></li>
-                    <li><a href="#contact-section">Contact</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
@@ -296,15 +289,15 @@
             <div class="system-parts">
                 <div class="system-parts">
                     <div class="system-part">
-                        <img src="/assets/images/arduino.jpg" alt="Arduino Device" class="system-image">
+                        <img src="{% static 'img/arduino.jpg' %}" alt="Arduino Device" class="system-image">
                         <div class="description">The Arduino device is the central component of the OneTap Check system. It serves as the main controller responsible for managing attendance data. The Arduino is equipped with wireless communication capabilities, allowing it to interact with RFID tags and other peripherals. Additionally, it can be housed in a protective case to ensure durability and stability.</div>
                     </div>
                     <div class="system-part">
-                        <img src="/assets/images/rfid.jpg" alt="RFID Device" class="system-image">
+                        <img src="{% static 'img/rfid.jpg' %}" alt="RFID Device" class="system-image">
                         <div class="description">RFID (Radio-Frequency Identification) technology is used to uniquely identify objects or individuals wirelessly. In the OneTap Check system, RFID tags are assigned to users and are tapped on the Arduino device to record attendance. These tags operate at a frequency of 13.56MHz, providing fast and reliable communication with the RC522 module.</div>
                     </div>
                     <div class="system-part">
-                        <img src="/assets/images/rc522.jpg" alt="RC522 Module" class="system-image">
+                        <img src="{% static '/img/rc522.jpg' %}" alt="RC522 Module" class="system-image">
                         <div class="description">The RC522 module serves as the intermediary between the RFID tags and the Arduino board. It facilitates communication by reading data from the tags and transmitting it to the Arduino for processing. </div>
                     </div>
             </div>
@@ -321,15 +314,15 @@
                     <div class="member-role"><span class="blue-text">UI | Front-End</span></div>
                 </div>
                 <div class="team-member">
-                    <div class="member-name">Gracco Aloba</div>
+                    <div class="member-name">Gracco Alobba</div>
                     <div class="member-role"><span class="blue-text">Hardware | Documents</span></div>
                 </div>
                 <div class="team-member">
-                    <div class="member-name">Manuel Balmes</div>
+                    <div class="member-name">Manuel T Balmes</div>
                     <div class="member-role"><span class="blue-text">Documents | Presentations</span></div>
                 </div>
                 <div class="team-member">
-                    <div class="member-name">Johanes Lawrence Leyran</div>
+                    <div class="member-name">Johanes Lawrence Scott II S. Leyran</div>
                     <div class="member-role"><span class="blue-text">Back-End | API | Data-Base</span></div>
                 </div>
                 <div class="team-member">
@@ -343,10 +336,6 @@
     <footer class="footer">
         <div class="page-container">
             <p>&copy; 2024 OneTap Check. All rights reserved.</p>
-            <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-            </ul>
         </div>
     </footer>
 {% endblock %}

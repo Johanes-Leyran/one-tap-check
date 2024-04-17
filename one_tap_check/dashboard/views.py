@@ -65,7 +65,7 @@ def class_schedules(request, pk):
             'units': units
         }
 
-        return render(request, 'dashboard/teacher/class_schedule.html', data)
+        return render(request, 'dashboard/teacher/schedule_unit_list.html', data)
 
 
 @login_required
@@ -92,7 +92,7 @@ def dashboard_teacher_class_list(request, pk):
             'sections': sections.all()
         }
 
-        return render(request, 'dashboard/teacher/classlist.html', context=data)
+        return render(request, 'dashboard/teacher/section_list.html', context=data)
 
 
 def attendance_list(request, pk, section):
@@ -144,4 +144,4 @@ def attendance(request, pk, at_pk):
             'attendance': attendance_record
         }
 
-        return render(request, 'dashboard/teacher/attendance_record.html', context=data)
+        return render(request, 'dashboard/teacher/attendance_view.html', context=data)

@@ -1,0 +1,73 @@
+{% extends "dashboard/dashboard_generic.html" %}
+{% load static %}
+
+{% block title %}
+    Teacher - Class List
+{% endblock %}
+
+{% block extra_content %}
+   <main>
+      <div class="header">
+         <div class="left">
+            <h1>Class Lists</h1>
+            <ul class="breadcrumb">
+               <li><a href="#">
+                  Section 101
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+      <div class="class-section-container">
+         <h2>Section 101 - Student Lists</h2>
+         <div class="search-filter-container">
+            <input type="text" id="search-input" placeholder="Search...">
+            <button class="action-btn" onclick="exportToExcel()">
+            <i class='bx bx-cloud-download'></i>
+            Export to Excel
+            </button>
+         </div>
+         <table id="student-table">
+            <thead>
+               <tr>
+                  <th>Student ID</th>
+                  <th>Student Name</th>
+                  <th>On Time</th>
+                  <th>Absents</th>
+                  <th>Lates</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>12345</td>
+                  <td>John Doe</td>
+                  <td>10</td>
+                  <td>2</td>
+                  <td>3</td>
+               </tr>
+               <tr>
+                  <td>67890</td>
+                  <td>Jane Doe</td>
+                  <td>8</td>
+                  <td>4</td>
+                  <td>5</td>
+               </tr>
+               <tr>
+                  <td>01291</td>
+                  <td>Batleleng Batumbakal</td>
+                  <td>10</td>
+                  <td>2</td>
+                  <td>3</td>
+               </tr>
+               <tr>
+                  <td>821317</td>
+                  <td>Aldrich Malambot</td>
+                  <td>10</td>
+                  <td>2</td>
+                  <td>3</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </main>
+{% end block %}

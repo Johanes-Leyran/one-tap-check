@@ -8,7 +8,6 @@
         background-color: var(--blue);
         cursor: pointer;
     }
-
 </style>
 {% endblock %}
 
@@ -29,7 +28,7 @@
             <tbody>
 
             {% for unit in current_units %}
-                <tr class="clickable" id="clickable">
+                <tr id="clickable">
                     <td>{{ unit.subject.subject_name }}</td>
                     <td>{{ unit.starting_at }}</td>
                     <td>{{ unit.end_at }}</td>
@@ -38,11 +37,10 @@
                 </tr>
 
             <script>
-            document.getElementById("clickable").addEventListener('click', function (event) {
-                window.location.replace('');
-            });
+                document.getElementById("clickable").addEventListener('click', function (event) {
+                    window.location.replace('');
+                });
             </script>
-
             {% endfor %}
             </tbody>
         </table>

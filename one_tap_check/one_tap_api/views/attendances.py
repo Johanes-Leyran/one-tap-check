@@ -42,7 +42,7 @@ def create_attendance(request):
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Room not found", "Error": str(e)},
+                data={"Message": "Scanner not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -56,15 +56,13 @@ def create_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if tag.is_compromised and not user:
+        if tag.is_compromised and user:
             notify.send(
-                sender=None,
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
         else:
             notify.send(
-                sender=None,
                 recipient=user,
                 verb=f"Compromised tag is used at {room.name}"
             )
@@ -102,7 +100,7 @@ def create_attendance(request):
                 return Response(
                     data={
                         "Message": f"{type(e)}",
-                        "Details": f"When creating attendance exception raised: {str(e)}"
+                        "Error": f"When creating attendance exception raised: {str(e)}"
                     },
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
@@ -120,7 +118,7 @@ def create_attendance(request):
 
         else:
             return Response(
-                data={"Message": "Room is occupied"},
+                data={"Message": "Room occupied"},
                 status=status.HTTP_409_CONFLICT
             )
 
@@ -155,7 +153,7 @@ def attend_attendance(request):
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Room not found", "Error": str(e)},
+                data={"Message": "Scanner not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -177,16 +175,14 @@ def attend_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if tag.is_compromised and not user:
+        if tag.is_compromised and user:
             notify.send(
-                sender=None,
-                recipient=user,
+                recipient=attendance.teacher,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
         else:
             notify.send(
-                sender=None,
-                recipient=user,
+                recipient=attendance.teacher,
                 verb=f"Compromised tag is used at {room.name}"
             )
 
@@ -249,7 +245,7 @@ def end_attendance(request):
             scanner = get_object_or_404(Scanner, pk=serializer.validated_data['device_id'])
         except Http404 as e:
             return Response(
-                data={"Message": "Room not found", "Error": str(e)},
+                data={"Message": "Scanner not found", "Error": str(e)},
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -271,15 +267,13 @@ def end_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if tag.is_compromised and not user:
+        if tag.is_compromised and user:
             notify.send(
-                sender=None,
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
         else:
             notify.send(
-                sender=None,
                 recipient=user,
                 verb=f"Compromised tag is used at {room.name}"
             )
