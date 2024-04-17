@@ -146,6 +146,14 @@ def attend_attendance(request):
             )
 
         try:
+            user = get_object_or_404(get_user_model(), pk=serializer.validated_data['tag_id'])
+        except Http404 as e:
+            return Response(
+                data={"Message": "Tag not found", "Error": str(e)},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
             tag = get_object_or_404(Tag, pk=serializer.validated_data['tag_id'])
         except Http404 as e:
             return Response(
@@ -169,7 +177,6 @@ def attend_attendance(request):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        user = tag.user
         room = scanner.designated_room
 
         if not room:
@@ -243,6 +250,14 @@ def end_attendance(request):
             return Response(
                 data={"Message": "Purpose is wrong"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
+            )
+
+        try:
+            user = get_object_or_404(get_user_model(), pk=serializer.validated_data['tag_id'])
+        except Http404 as e:
+            return Response(
+                data={"Message": "Tag not found", "Error": str(e)},
+                status=status.HTTP_404_NOT_FOUND
             )
 
         # authenticate data
