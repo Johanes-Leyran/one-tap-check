@@ -59,6 +59,13 @@ def create_attendance(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # if tag has no associated user
+        if not user:
+            return Response(
+                data={"Message": "Tag has no user"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # send notif of compromised tag is used
         if user and tag.is_compromised:
             notify.send(
@@ -66,18 +73,11 @@ def create_attendance(request):
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
-        else:
+        elif user:
             notify.send(
                 sender=None,
                 recipient=user,
                 verb=f"Compromised tag is used at {room.name}"
-            )
-
-        # if tag has no associated user
-        if not user:
-            return Response(
-                data={"Message": "Tag has no user"},
-                status=status.HTTP_400_BAD_REQUEST
             )
 
         if room.is_available:
@@ -180,6 +180,13 @@ def attend_attendance(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # if tag has no associated user
+        if not user:
+            return Response(
+                data={"Message": "Tag has no user"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # send notif of compromised tag is used
         if user and tag.is_compromised:
             notify.send(
@@ -271,6 +278,13 @@ def end_attendance(request):
         if not room:
             return Response(
                 data={"Message": "Scanner has no room"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # if tag has no associated user
+        if not user:
+            return Response(
+                data={"Message": "Tag has no user"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
