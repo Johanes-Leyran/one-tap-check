@@ -37,7 +37,7 @@ class OneTapUser(AbstractBaseUser, PermissionsMixin):
         verbose_name="Gender of the user",
         max_length=6
     )
-    schedule = models.OneToOneField(
+    schedule = models.ForeignKey(
         'schedules.ScheduleSheet',
         on_delete=models.SET_NULL,
         null=True,
