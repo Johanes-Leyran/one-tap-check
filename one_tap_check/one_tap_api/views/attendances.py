@@ -330,7 +330,7 @@ def end_attendance(request):
         # they will be marked as absent
         Attendee.objects.filter(
             attendance__pk=attendance.pk,
-            end_at__is_null=True
+            end_at__isnull=True
         ).update(status="Absent")
 
         # update the availability of the room
