@@ -13,7 +13,7 @@ import calendar
 """
 
 
-def get_nearest_schedule(teacher: get_user_model(), date_time: DateTimeField):
+def get_nearest_schedule(teacher: get_user_model()):
     # could be none
     schedule = teacher.schedule
     current_time = timezone.localtime(timezone.now().replace(second=0, microsecond=0))
@@ -44,9 +44,5 @@ def get_nearest_schedule(teacher: get_user_model(), date_time: DateTimeField):
         if lowest_time_difference is None or lowest_time_difference > difference:
             lowest_time_difference = difference
             nearest_schedule_unit = schedule_unit
-
-    # if the difference of nearest schedule is too high
-    if lowest_time_difference > timedelta(minutes=35).total_seconds():
-        return None
 
     return nearest_schedule_unit

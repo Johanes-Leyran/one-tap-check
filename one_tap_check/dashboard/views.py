@@ -46,7 +46,7 @@ def dashboard_teacher(request, pk):
 
 
 @login_required
-def class_schedules(request, pk):
+def schedules(request, pk):
     user_id = pk
     user_model = get_user_model()
     user = user_model.objects.get(pk=user_id)
@@ -69,7 +69,7 @@ def class_schedules(request, pk):
 
 
 @login_required
-def dashboard_teacher_class_list(request, pk):
+def section_list(request, pk):
     user_id = pk
     user_model = get_user_model()
     user = user_model.objects.get(pk=user_id)
@@ -84,17 +84,35 @@ def dashboard_teacher_class_list(request, pk):
             }
             return render(request, 'generic_error.html', data)
 
-        sections = Section.objects.all()
-        print(sections[0].teacher_profiles)
+        sections = teacher_profile.sections.all()
 
         data = {
             'user': user,
-            'sections': sections.all()
+            'sections': sections
         }
 
         return render(request, 'dashboard/teacher/section_list.html', context=data)
 
 
+@login_required
+def section_view(request, pk, name):
+    user_id = pk
+
+    user_model = get_user_model()
+    user = user_model.objects.get(pk=user_id)
+
+    if user.has_perm('accounts.set_teacher_status'):
+        section = Section.objects.get(pk=name)
+
+        data = {
+            'user': user,
+            'section': section
+        }
+
+        return render(request, 'dashboard/teacher/section_view.html', context=data)
+
+
+@login_required
 def attendance_list(request, pk, section):
     user_id = pk
 

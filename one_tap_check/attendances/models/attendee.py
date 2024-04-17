@@ -1,5 +1,5 @@
 from django.db import models
-from simple_history.models import HistoricForeignKey
+from simple_history.models import HistoricalRecords
 from .attendance import Attendance
 from django.contrib.auth import get_user_model
 from mixins.time_awarezone_mixin import TimezoneAwareMixin
@@ -47,6 +47,7 @@ class Attendee(TimezoneAwareMixin):
         blank=True,
         choices=STATUS_CHOICES
     )
+    history = HistoricalRecords
 
     def time_out(self) -> None:
         self.end_at = timezone.now()

@@ -1,0 +1,146 @@
+{% extends "dashboard/dashboard_generic.html" %}
+{% load static %}
+
+{% block title %}Dashboard - Teacher{% endblock %}
+
+{% block extra_content %}
+<main>
+   <div class="header">
+      <div class="left">
+         <h1>Archive</h1>
+         <ul class="breadcrumb">
+            <li><a href="#">
+               Record Details
+               </a>
+            </li>
+         </ul>
+      </div>
+   </div>
+   <div class="info-container">
+      <div class="class-info-box">
+         <h2>Classroom Information</h2>
+         <p><strong>Subject:</strong> Computer Programming 1</p>
+         <p><strong>Time In:</strong> 8:30am</p>
+         <p><strong>Time Out:</strong> ---</p>
+         <p><strong>Section:</strong> ITMAWD 101</p>
+      </div>
+      <div class="teachers-info-box">
+         <h2>Teachers Information</h2>
+         <p><strong>Teacher Name:</strong> Teacher 1</p>
+         <p><strong>ID Number:</strong> 000123456</p>
+         <button class="teachers-info-btn" onclick="openTeacherModal()">View Information</button>
+         <button class="room-schedule-btn" onclick="openRoomScheduleModal()">Room Schedule</button>
+      </div>
+   </div>
+   <!-- Teacher Modal -->
+   <div id="teacherModal" class="teacher-modal">
+      <div class="modal-content">
+         <span class="close-modal" onclick="closeTeacherModal()">&times;</span>
+         <div class="profile-info">
+            <div class="profile-picture">
+               <img src="/assets/images/profile-tc.png" alt="Teacher Profile Picture">
+               <p><strong>Name:</strong> Teacher 1</p>
+               <p><strong>ID Number:</strong> 000123456</p>
+               <p><strong>Contact Number:</strong> +1234567890</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Room Schedule Modal -->
+   <div id="roomScheduleModal" class="teacher-modal">
+      <div class="modal-content room-schedule-modal">
+         <span class="close-modal" onclick="closeRoomScheduleModal()">&times;</span>
+         <h2>Room Schedule</h2>
+         <img src="path_to_your_image.jpg" alt="Room Schedule Image">
+      </div>
+   </div>
+   <div class="bottom-data">
+   <div class="recent-timein">
+      <div class="header">
+         <h3>Room 101</h3>
+         <div class="filter-container">
+            <label for="attendance-filter">Filter:</label>
+            <select id="attendance-filter">
+               <option value="all">All</option>
+               <option value="attended">Attended</option>
+               <option value="late">Late</option>
+               <option value="absences">Absent</option>
+            </select>
+         </div>
+         <!-- Search Bar -->
+         <div class="department-container">
+            <div class="search-bar">
+               <div class="filter-container">
+                  <input type="text" id="searchInput" class="search-input" placeholder="Search..." oninput="searchTable()">
+               </div>
+            </div>
+         </div>
+      </div>
+      <table id="recent-timein-table">
+         <thead>
+            <tr>
+               <th>No.</th>
+               <th>Student Name</th>
+               <th>Date</th>
+               <th>Time In</th>
+               <th>Status</th>
+            </tr>
+         </thead>
+         <tbody>
+            <!-- Sample Data -->
+            <tr class="attendees-section">
+               <td>1</td>
+               <td>John Doe</td>
+               <td>2024-01-10</td>
+               <td>09:00 AM</td>
+               <td>Attended</td>
+            </tr>
+            <tr class="late-section">
+               <td>2</td>
+               <td>Jane Doe</td>
+               <td>2024-01-10</td>
+               <td>09:15 AM</td>
+               <td>Late</td>
+            </tr>
+            <tr class="absences-section">
+               <td>3</td>
+               <td>Bob Smith</td>
+               <td>2024-01-10</td>
+               <td>N/A</td>
+               <td>Absent</td>
+            </tr>
+            <!-- Add more rows as needed -->
+            <tr class="attendees-section">
+               <td>4</td>
+               <td>Alice Johnson</td>
+               <td>2024-01-10</td>
+               <td>10:30 AM</td>
+               <td>Attended</td>
+            </tr>
+            <tr class="late-section">
+               <td>5</td>
+               <td>Charlie Brown</td>
+               <td>2024-01-10</td>
+               <td>09:10 AM</td>
+               <td>Late</td>
+            </tr>
+            <tr class="absences-section">
+               <td>6</td>
+               <td>Eve Davis</td>
+               <td>2024-01-10</td>
+               <td>N/A</td>
+               <td>Absent</td>
+            </tr>
+            <div class="action-buttons">
+               <button class="action-btn" onclick="exportToExcel()">
+               <i class='bx bx-cloud-download'></i>
+               Export to Excel
+               </button>
+            </div>
+         </tbody>
+      </table>
+      </div>
+   </div>
+</main>
+
+{% endblock %}
