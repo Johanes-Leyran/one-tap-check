@@ -55,10 +55,10 @@ def schedules(request, pk):
 
         try:
             schedule_sheet = ScheduleSheet.objects.get(user=user)
+            units = schedule_sheet.schedule_units
         except ScheduleSheet.DoesNotExist:
             schedule_sheet = None
-
-        units = schedule_sheet.schedule_units
+            units = None
 
         data = {
             'user': user,
