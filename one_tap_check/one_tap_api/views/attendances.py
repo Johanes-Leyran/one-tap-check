@@ -62,11 +62,13 @@ def create_attendance(request):
         # send notif of compromised tag is used
         if user and tag.is_compromised:
             notify.send(
+                sender=None,
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
         else:
             notify.send(
+                sender=None,
                 recipient=user,
                 verb=f"Compromised tag is used at {room.name}"
             )
@@ -179,14 +181,16 @@ def attend_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if tag.is_compromised and user:
+        if user and tag.is_compromised:
             notify.send(
-                recipient=attendance.teacher,
+                sender=None,
+                recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
         else:
             notify.send(
-                recipient=attendance.teacher,
+                sender=None,
+                recipient=user,
                 verb=f"Compromised tag is used at {room.name}"
             )
 
@@ -271,13 +275,15 @@ def end_attendance(request):
             )
 
         # send notif of compromised tag is used
-        if tag.is_compromised and user:
+        if user and tag.is_compromised:
             notify.send(
+                sender=None,
                 recipient=user,
                 verb=f"Compromised tag of {user.last_name} is used at {room.name}"
             )
         else:
             notify.send(
+                sender=None,
                 recipient=user,
                 verb=f"Compromised tag is used at {room.name}"
             )
