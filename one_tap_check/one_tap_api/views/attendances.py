@@ -139,7 +139,7 @@ def attend_attendance(request):
 
     if serializer.is_valid():
 
-        if not serializer.validated_data['purpose'] != "ATTEND_SESSION":
+        if serializer.validated_data['purpose'] != "ATTEND_SESSION":
             return Response(
                 data={"Message": "Purpose is wrong"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
